@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TON Market</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#111;
+    color:white;
+    min-height:100vh;
+}
+
+header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:#1b1b1b;
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    padding:20px;
+    flex-wrap:wrap;
+}
+
+.top-btn{
+    border:none;
+    padding:12px 24px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:17px;
+    font-weight:bold;
+    transition:0.2s;
+    color:white;
+}
+
+.buy-btn{ background:#4caf50; }
+.sell-btn{ background:#ff9800; }
+.my-btn{ background:#2196f3; }
+
+.top-btn:hover{
+    transform:scale(1.05);
+}
+
+.container{
+    width:95%;
+    max-width:1300px;
+    margin:auto;
+    padding:20px;
+}
+
+.hidden{
+    display:none;
+}
+
+form{
+    background:#1f1f1f;
+    padding:20px;
+    border-radius:18px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+input, select, textarea{
+    padding:13px;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    font-size:16px;
+}
+
+textarea{
+    resize:none;
+    height:80px;
+}
+
+.submit-btn{
+    border:none;
+    background:#00aaff;
+    color:white;
+    padding:15px;
+    border-radius:12px;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.filters{
+    background:#1f1f1f;
+    padding:20px;
+    border-radius:18px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.sort-btn{
+    border:none;
+    background:#9c27b0;
+    color:white;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    padding:12px;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#1f1f1f;
+    border-radius:18px;
+    overflow:hidden;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+
+.no-image{
+    width:100%;
+    height:220px;
+    background:#2a2a2a;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#777;
+    font-size:22px;
+}
+
+.card-content{
+    padding:15px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.card-title{
+    font-size:22px;
+    font-weight:bold;
+}
+
+.price{
+    color:#4caf50;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.empty{
+    text-align:center;
+    opacity:0.7;
+    margin-top:40px;
+    font-size:22px;
+}
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.8);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:999;
+    padding:20px;
+}
+
+.modal-content{
+    background:#1f1f1f;
+    width:100%;
+    max-width:700px;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.modal img{
+    width:100%;
+    max-height:400px;
+    object-fit:cover;
+}
+
+.modal-body{
+    padding:20px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.close-btn{
+    background:red;
+    color:white;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.remove-btn{
+    background:#ff3b3b;
+    border:none;
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.telegram-link{
+    color:#00aaff;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.warning-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.8);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:2000;
+    padding:20px;
+}
+
+.warning-box{
+    background:#1f1f1f;
+    max-width:450px;
+    width:100%;
+    padding:25px;
+    border-radius:18px;
+    text-align:center;
+}
+
+.warning-buttons{
+    display:flex;
+    gap:10px;
+    margin-top:20px;
+    flex-wrap:wrap;
+}
+
+.warning-buttons button{
+    flex:1;
+    border:none;
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+    color:white;
+    font-weight:bold;
+}
+
+.continue-btn{
+    background:#00aaff;
+}
+
+.cancel-btn{
+    background:#ff3b3b;
+}
+
+.never-btn{
+    background:#666;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+
+<button class="top-btn buy-btn" onclick="showSection('buy')">
+Купить
+</button>
+
+<button class="top-btn sell-btn" onclick="showSection('sell')">
+Продать
+</button>
+
+<button class="top-btn my-btn" onclick="showSection('my')">
+Мои объявления
+</button>
+
+</header>
+
+<div class="container">
+
+<section id="sellSection">
+
+<form id="sellForm">
+
+<input type="text" id="title" placeholder="Название объявления" required>
+
+<input type="text" id="telegram" placeholder="Telegram Username (@username)" required>
+
+<input type="file" id="image" accept="image/*">
+
+<select id="generation" required>
+<option value="">Поколение</option>
+</select>
+
+<select id="rarity" required>
+<option value="">Редкость</option>
+<option>Обычный</option>
+<option>Редкий</option>
+<option>Мифический</option>
+<option>Легендарный</option>
+<option>Мутант</option>
+</select>
+
+<select id="biome" required>
+<option value="">Биом</option>
+<option>Луг</option>
+<option>Лес</option>
+<option>Пустыня</option>
+<option>Горы</option>
+<option>Море</option>
+<option>Грядки</option>
+<option>Лёд</option>
+</select>
+
+<textarea
+id="features"
+maxlength="150"
+placeholder="Описание / особенности (до 150 символов)"
+required
+></textarea>
+
+<input
+type="number"
+id="price"
+placeholder="Цена TON"
+step="0.01"
+min="0.01"
+required
+>
+
+<button class="submit-btn" type="submit">
+Создать объявление
+</button>
+
+</form>
+
+</section>
+
+<section id="buySection" class="hidden">
+
+<div class="filters">
+
+<select id="filterGeneration">
+<option value="">Все поколения</option>
+</select>
+
+<select id="filterRarity">
+<option value="">Любая редкость</option>
+<option>Обычный</option>
+<option>Редкий</option>
+<option>Мифический</option>
+<option>Легендарный</option>
+<option>Мутант</option>
+</select>
+
+<select id="filterBiome">
+<option value="">Любой биом</option>
+<option>Луг</option>
+<option>Лес</option>
+<option>Пустыня</option>
+<option>Горы</option>
+<option>Море</option>
+<option>Грядки</option>
+<option>Лёд</option>
+</select>
+
+<button class="sort-btn" id="sortBtn">
+Цена: дешевле
+</button>
+
+</div>
+
+<div class="cards" id="cards"></div>
+
+<div class="empty" id="emptyText">
+Пока нет объявлений
+</div>
+
+</section>
+
+<section id="mySection" class="hidden">
+
+<div class="cards" id="myCards"></div>
+
+<div class="empty" id="myEmpty">
+У вас пока нет объявлений
+</div>
+
+</section>
+
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+
+<img id="modalImage">
+
+<div class="modal-body">
+
+<h2 id="modalTitle"></h2>
+
+<div id="modalGeneration"></div>
+<div id="modalRarity"></div>
+<div id="modalBiome"></div>
+<div id="modalFeatures"></div>
+<div id="modalPrice" class="price"></div>
+
+<a
+id="modalTelegram"
+class="telegram-link"
+href="#"
+>
+</a>
+
+<button class="remove-btn hidden" id="removeBtn">
+Снять с продажи
+</button>
+
+<button class="close-btn" onclick="closeModal()">
+Закрыть
+</button>
+
+</div>
+</div>
+</div>
+
+<div class="warning-modal" id="warningModal">
+
+<div class="warning-box">
+
+<h3>
+Вы уверены, что хотите перейти к пользователю?
+</h3>
+
+<p>
+Площадка не несёт ответственность за покупки вне приложения.
+</p>
+
+<div class="warning-buttons">
+
+<button class="continue-btn" id="continueTelegram">
+Перейти
+</button>
+
+<button class="never-btn" id="neverShowAgain">
+Больше не присылать
+</button>
+
+<button class="cancel-btn" onclick="closeWarning()">
+Отмена
+</button>
+
+</div>
+
+</div>
+</div>
+
+<script>
+
+const generationSelects = [
+    document.getElementById("generation"),
+    document.getElementById("filterGeneration")
+];
+
+generationSelects.forEach(select => {
+
+    for(let i = 1; i <= 10; i++){
+
+        const option = document.createElement("option");
+
+        option.value = i;
+        option.textContent = "Поколение " + i;
+
+        select.appendChild(option);
+    }
+});
+
+let ads = JSON.parse(localStorage.getItem("ads")) || [];
+
+let ascending = true;
+let telegramLink = "";
+
+function saveAds(){
+    localStorage.setItem("ads", JSON.stringify(ads));
+}
+
+function showSection(type){
+
+    document.getElementById("sellSection").classList.add("hidden");
+    document.getElementById("buySection").classList.add("hidden");
+    document.getElementById("mySection").classList.add("hidden");
+
+    if(type === "sell"){
+        document.getElementById("sellSection").classList.remove("hidden");
+    }
+
+    if(type === "buy"){
+        document.getElementById("buySection").classList.remove("hidden");
+        renderAds();
+    }
+
+    if(type === "my"){
+        document.getElementById("mySection").classList.remove("hidden");
+        renderMyAds();
+    }
+}
+
+function getImageHTML(ad){
+
+    if(ad.image){
+
+        return `<img src="${ad.image}">`;
+
+    }else{
+
+        return `
+            <div class="no-image">
+                Нет фото
+            </div>
+        `;
+    }
+}
+
+/* СОЗДАНИЕ */
+
+document.getElementById("sellForm").addEventListener("submit", e => {
+
+    e.preventDefault();
+
+    const file = document.getElementById("image").files[0];
+
+    const createAd = (imageData = null) => {
+
+        const ad = {
+
+            id: Date.now(),
+
+            title: document.getElementById("title").value,
+
+            telegram: document.getElementById("telegram").value.replace("@", ""),
+
+            image: imageData,
+
+            generation: document.getElementById("generation").value,
+
+            rarity: document.getElementById("rarity").value,
+
+            biome: document.getElementById("biome").value,
+
+            features: document.getElementById("features").value,
+
+            price: parseFloat(document.getElementById("price").value)
+        };
+
+        ads.push(ad);
+
+        saveAds();
+
+        alert("Объявление создано!");
+
+        document.getElementById("sellForm").reset();
+    };
+
+    if(file){
+
+        const reader = new FileReader();
+
+        reader.onload = () => {
+            createAd(reader.result);
+        };
+
+        reader.readAsDataURL(file);
+
+    }else{
+
+        createAd(null);
+    }
+});
+
+/* СОРТИРОВКА */
+
+document.getElementById("sortBtn").addEventListener("click", () => {
+
+    ascending = !ascending;
+
+    document.getElementById("sortBtn").textContent =
+        ascending
+        ? "Цена: дешевле"
+        : "Цена: дороже";
+
+    renderAds();
+});
+
+/* ФИЛЬТРЫ */
+
+document.getElementById("filterGeneration").addEventListener("change", renderAds);
+document.getElementById("filterRarity").addEventListener("change", renderAds);
+document.getElementById("filterBiome").addEventListener("change", renderAds);
+
+/* РЕНДЕР ОБЪЯВЛЕНИЙ */
+
+function renderAds(){
+
+    const cards = document.getElementById("cards");
+
+    cards.innerHTML = "";
+
+    let filtered = [...ads];
+
+    const generation = document.getElementById("filterGeneration").value;
+    const rarity = document.getElementById("filterRarity").value;
+    const biome = document.getElementById("filterBiome").value;
+
+    if(generation){
+        filtered = filtered.filter(ad => ad.generation == generation);
+    }
+
+    if(rarity){
+        filtered = filtered.filter(ad => ad.rarity == rarity);
+    }
+
+    if(biome){
+        filtered = filtered.filter(ad => ad.biome == biome);
+    }
+
+    filtered.sort((a,b) => ascending ? a.price - b.price : b.price - a.price);
+
+    document.getElementById("emptyText").style.display =
+        filtered.length ? "none" : "block";
+
+    filtered.forEach(ad => {
+
+        const card = document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+
+            ${getImageHTML(ad)}
+
+            <div class="card-content">
+
+                <div class="card-title">${ad.title}</div>
+
+                <div>${ad.rarity}</div>
+
+                <div>${ad.biome}</div>
+
+                <div class="price">${ad.price.toFixed(2)} TON</div>
+
+            </div>
+        `;
+
+        card.onclick = () => openModal(ad, false);
+
+        cards.appendChild(card);
+    });
+}
+
+/* МОИ ОБЪЯВЛЕНИЯ */
+
+function renderMyAds(){
+
+    const myCards = document.getElementById("myCards");
+
+    myCards.innerHTML = "";
+
+    document.getElementById("myEmpty").style.display =
+        ads.length ? "none" : "block";
+
+    ads.forEach(ad => {
+
+        const card = document.createElement("div");
+
+        card.className = "card";
+
+        card.innerHTML = `
+
+            ${getImageHTML(ad)}
+
+            <div class="card-content">
+
+                <div class="card-title">${ad.title}</div>
+
+                <div class="price">${ad.price.toFixed(2)} TON</div>
+
+            </div>
+        `;
+
+        card.onclick = () => openModal(ad, true);
+
+        myCards.appendChild(card);
+    });
+}
+
+/* МОДАЛКА */
+
+function openModal(ad, myAd){
+
+    document.getElementById("modal").style.display = "flex";
+
+    const modalImage = document.getElementById("modalImage");
+
+    if(ad.image){
+
+        modalImage.style.display = "block";
+        modalImage.src = ad.image;
+
+    }else{
+
+        modalImage.style.display = "none";
+    }
+
+    document.getElementById("modalTitle").textContent = ad.title;
+
+    document.getElementById("modalGeneration").innerHTML =
+        "<b>Поколение:</b> " + ad.generation;
+
+    document.getElementById("modalRarity").innerHTML =
+        "<b>Редкость:</b> " + ad.rarity;
+
+    document.getElementById("modalBiome").innerHTML =
+        "<b>Биом:</b> " + ad.biome;
+
+    document.getElementById("modalFeatures").innerHTML =
+        "<b>Описание:</b> " + ad.features;
+
+    document.getElementById("modalPrice").textContent =
+        ad.price.toFixed(2) + " TON";
+
+    const tg = document.getElementById("modalTelegram");
+
+    tg.textContent = "Написать @" + ad.telegram;
+
+    tg.onclick = (e) => {
+
+        e.preventDefault();
+
+        telegramLink = "https://t.me/" + ad.telegram;
+
+        const disabled = localStorage.getItem("disableTelegramWarning");
+
+        if(disabled){
+
+            window.open(telegramLink, "_blank");
+
+        }else{
+
+            document.getElementById("warningModal").style.display = "flex";
+        }
+    };
+
+    const removeBtn = document.getElementById("removeBtn");
+
+    if(myAd){
+
+        removeBtn.classList.remove("hidden");
+
+        removeBtn.onclick = () => {
+
+            ads = ads.filter(item => item.id !== ad.id);
+
+            saveAds();
+
+            closeModal();
+
+            renderMyAds();
+            renderAds();
+        };
+
+    }else{
+
+        removeBtn.classList.add("hidden");
+    }
+}
+
+function closeModal(){
+    document.getElementById("modal").style.display = "none";
+}
+
+/* TELEGRAM ПРЕДУПРЕЖДЕНИЕ */
+
+document.getElementById("continueTelegram").onclick = () => {
+
+    window.open(telegramLink, "_blank");
+
+    closeWarning();
+};
+
+document.getElementById("neverShowAgain").onclick = () => {
+
+    localStorage.setItem("disableTelegramWarning", "true");
+
+    window.open(telegramLink, "_blank");
+
+    closeWarning();
+};
+
+function closeWarning(){
+    document.getElementById("warningModal").style.display = "none";
+}
+
+/* СТАРТ */
+
+showSection("buy");
+
+</script>
+</body>
+</html>
