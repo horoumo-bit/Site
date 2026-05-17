@@ -24,14 +24,8 @@ overflow-x:hidden;
 }
 
 @keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(20px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
 }
 
 header{
@@ -74,25 +68,12 @@ transition:.2s;
 color:white;
 }
 
-.top-btn:hover{
-transform:scale(1.03);
-}
+.top-btn:hover{transform:scale(1.03);}
 
-.buy-btn{
-background:#4caf50;
-}
-
-.sell-btn{
-background:#ff9800;
-}
-
-.my-btn{
-background:#2196f3;
-}
-
-.profile-btn{
-background:#000;
-}
+.buy-btn{background:#4caf50;}
+.sell-btn{background:#ff9800;}
+.my-btn{background:#2196f3;}
+.profile-btn{background:#000;}
 
 .gray-btn{
 background:#444;
@@ -104,23 +85,25 @@ font-size:12px;
 font-weight:700;
 }
 
+/* 👇 обновлённая кнопка профиля */
 .small-profile{
 position:absolute;
-right:-2px;
-top:-10px;
-width:40px;
-height:40px;
-border-radius:12px;
-font-size:16px;
+right:0;
+top:0;
+width:28px;
+height:28px;
+border-radius:8px;
+font-size:14px;
 display:flex;
 justify-content:center;
 align-items:center;
 background:#000;
+padding:0;
+min-width:28px;
+min-height:28px;
 }
 
-.centered-my{
-min-width:260px;
-}
+.centered-my{min-width:260px;}
 
 .container{
 width:95%;
@@ -129,9 +112,7 @@ margin:auto;
 padding:20px;
 }
 
-.hidden{
-display:none;
-}
+.hidden{display:none;}
 
 form{
 background:#1f1f1f;
@@ -143,9 +124,7 @@ gap:15px;
 animation:fadeUp .3s ease;
 }
 
-input,
-select,
-textarea{
+input,select,textarea{
 padding:14px;
 border:none;
 border-radius:14px;
@@ -155,10 +134,7 @@ background:#2a2a2a;
 color:white;
 }
 
-textarea{
-resize:none;
-height:90px;
-}
+textarea{resize:none;height:90px;}
 
 .submit-btn{
 border:none;
@@ -189,36 +165,9 @@ grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
 }
 
-.cards.compact{
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-}
+.cards.compact{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));}
 
-.cards.compact img,
-.cards.compact .no-image{
-display:none;
-}
-
-.cards.list{
-display:flex;
-flex-direction:column;
-}
-
-.cards.list .card{
-display:flex;
-}
-
-.cards.list img,
-.cards.list .no-image{
-display:none;
-}
-
-.cards.list .card-content{
-width:100%;
-display:flex;
-flex-direction:row;
-justify-content:space-between;
-align-items:center;
-}
+.cards.list{display:flex;flex-direction:column;}
 
 .card{
 background:#1f1f1f;
@@ -229,15 +178,9 @@ transition:.2s;
 animation:fadeUp .3s ease;
 }
 
-.card:hover{
-transform:translateY(-5px);
-}
+.card:hover{transform:translateY(-5px);}
 
-.card img{
-width:100%;
-height:220px;
-object-fit:cover;
-}
+.card img{width:100%;height:220px;object-fit:cover;}
 
 .no-image{
 width:100%;
@@ -256,16 +199,8 @@ flex-direction:column;
 gap:8px;
 }
 
-.card-title{
-font-size:22px;
-font-weight:bold;
-}
-
-.price{
-color:#4caf50;
-font-size:24px;
-font-weight:bold;
-}
+.card-title{font-size:22px;font-weight:bold;}
+.price{color:#4caf50;font-size:24px;font-weight:bold;}
 
 .empty{
 margin-top:70px;
@@ -352,38 +287,24 @@ font-size:18px;
 
 </style>
 </head>
+
 <body>
 
 <header>
 
 <div class="top-row">
 
-<button class="top-btn buy-btn" onclick="showSection('buy')">
-Купить
-</button>
+<button class="top-btn buy-btn" onclick="showSection('buy')">Купить</button>
+<button class="top-btn sell-btn" onclick="showSection('sell')">Продать</button>
 
-<button class="top-btn sell-btn" onclick="showSection('sell')">
-Продать
-</button>
-
-<button
-class="top-btn profile-btn small-profile"
-onclick="openProfile()"
->
-👤
-</button>
+<button class="top-btn profile-btn small-profile" onclick="openProfile()">👤</button>
 
 </div>
 
 <div class="center-row">
-
-<button
-class="top-btn my-btn centered-my"
-onclick="showSection('my')"
->
+<button class="top-btn my-btn centered-my" onclick="showSection('my')">
 Мои объявления
 </button>
-
 </div>
 
 </header>
@@ -394,18 +315,13 @@ onclick="showSection('my')"
 
 <form id="sellForm">
 
-<input
-type="text"
-id="title"
-placeholder="Название объявления"
-required
->
+<input type="text" id="title" placeholder="Название объявления" required>
 
-<input
-type="file"
-id="image"
-accept="image/*"
->
+<!-- 👇 заменён input file -->
+<label style="display:flex;flex-direction:column;gap:6px;color:#aaa;font-size:14px;">
+Фото
+<input type="file" id="image" accept="image/*">
+</label>
 
 <select id="generation" required>
 <option value="">Поколение</option>
@@ -432,24 +348,11 @@ accept="image/*"
 <option>Эхо</option>
 </select>
 
-<textarea
-id="features"
-maxlength="150"
-placeholder="Описание"
-></textarea>
+<textarea id="features" maxlength="150" placeholder="Описание"></textarea>
 
-<input
-type="number"
-id="price"
-placeholder="Цена TON"
-step="0.01"
-min="0.01"
-required
->
+<input type="number" id="price" placeholder="Цена TON" step="0.01" min="0.01" required>
 
-<button class="submit-btn" type="submit">
-Создать объявление
-</button>
+<button class="submit-btn" type="submit">Создать объявление</button>
 
 </form>
 
@@ -457,34 +360,10 @@ required
 
 <section id="buySection" class="hidden">
 
-<div style="
-display:flex;
-gap:8px;
-flex-wrap:wrap;
-margin-bottom:15px;
-">
-
-<button
-class="top-btn gray-btn"
-onclick="toggleFilters()"
->
-Фильтры
-</button>
-
-<button
-class="top-btn gray-btn"
-id="sortBtn"
->
-Цена ↓
-</button>
-
-<button
-class="top-btn gray-btn"
-onclick="changeViewMode()"
->
-Вид
-</button>
-
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px;">
+<button class="top-btn gray-btn" onclick="toggleFilters()">Фильтры</button>
+<button class="top-btn gray-btn" id="sortBtn">Цена ↓</button>
+<button class="top-btn gray-btn" onclick="changeViewMode()">Вид</button>
 </div>
 
 <div class="filters" id="filters">
@@ -517,583 +396,250 @@ onclick="changeViewMode()"
 </div>
 
 <div class="cards" id="cards"></div>
-
-<div class="empty" id="emptyText">
-Пока нет объявлений
-</div>
+<div class="empty" id="emptyText">Пока нет объявлений</div>
 
 </section>
 
 <section id="mySection" class="hidden">
 
 <div class="cards" id="myCards"></div>
-
-<div class="empty" id="myEmpty">
-У вас пока нет объявлений
-</div>
+<div class="empty" id="myEmpty">У вас пока нет объявлений</div>
 
 </section>
 
 </div>
 
 <div class="profile-modal" id="profileModal">
-
 <div class="profile-box">
 
-<div class="profile-title">
-Профиль
-</div>
+<div class="profile-title">Профиль</div>
 
 <div class="profile-info">
-
 <div id="profileName"></div>
-
 <div id="profileUsername"></div>
-
 </div>
 
-<button
-class="close-btn"
-onclick="closeProfile()"
->
-Закрыть
-</button>
+<button class="close-btn" onclick="closeProfile()">Закрыть</button>
 
 </div>
-
 </div>
 
 <script>
 
 let tg = window.Telegram.WebApp;
-
 tg.expand();
 
 const user = tg.initDataUnsafe.user;
 
 if(user){
-
-localStorage.setItem(
-"telegramUsername",
-user.username || "unknown"
-);
-
-localStorage.setItem(
-"telegramName",
-user.first_name || "Пользователь"
-);
-
+localStorage.setItem("telegramUsername", user.username || "unknown");
+localStorage.setItem("telegramName", user.first_name || "Пользователь");
 }
 
-document.getElementById("profileName")
-.textContent =
-"Имя: " +
-(localStorage.getItem("telegramName")
-|| "Пользователь");
+document.getElementById("profileName").textContent =
+"Имя: " + (localStorage.getItem("telegramName") || "Пользователь");
 
-document.getElementById("profileUsername")
-.textContent =
-"@" +
-(localStorage.getItem("telegramUsername")
-|| "unknown");
+document.getElementById("profileUsername").textContent =
+"@" + (localStorage.getItem("telegramUsername") || "unknown");
 
-const generationSelects = [
-document.getElementById("generation"),
-document.getElementById("filterGeneration")
-];
-
-generationSelects.forEach(select=>{
-
-for(let i=1;i<=10;i++){
-
-const option =
-document.createElement("option");
-
-option.value=i;
-
-option.textContent=
-"Поколение "+i;
-
-select.appendChild(option);
-
-}
-
-});
-
-let ads =
-JSON.parse(localStorage.getItem("ads"))
-|| [];
-
+let ads = JSON.parse(localStorage.getItem("ads")) || [];
 let ascending = true;
-
 let currentView = 0;
 
 function saveAds(){
+localStorage.setItem("ads", JSON.stringify(ads));
+}
 
-localStorage.setItem(
-"ads",
-JSON.stringify(ads)
-);
-
+function deleteAd(id){
+ads = ads.filter(a => a.id !== id);
+saveAds();
+renderAds();
+renderMyAds();
 }
 
 function showSection(type){
 
-document.getElementById("sellSection")
-.classList.add("hidden");
+document.getElementById("sellSection").classList.add("hidden");
+document.getElementById("buySection").classList.add("hidden");
+document.getElementById("mySection").classList.add("hidden");
 
-document.getElementById("buySection")
-.classList.add("hidden");
-
-document.getElementById("mySection")
-.classList.add("hidden");
-
-if(type==="sell"){
-
-document.getElementById("sellSection")
-.classList.remove("hidden");
+if(type==="sell") document.getElementById("sellSection").classList.remove("hidden");
+if(type==="buy"){ document.getElementById("buySection").classList.remove("hidden"); renderAds(); }
+if(type==="my"){ document.getElementById("mySection").classList.remove("hidden"); renderMyAds(); }
 
 }
 
-if(type==="buy"){
-
-document.getElementById("buySection")
-.classList.remove("hidden");
-
-renderAds();
-
-}
-
-if(type==="my"){
-
-document.getElementById("mySection")
-.classList.remove("hidden");
-
-renderMyAds();
-
-}
-
-}
-
-function openProfile(){
-
-document.getElementById(
-"profileModal"
-).style.display = "flex";
-
-}
-
-function closeProfile(){
-
-document.getElementById(
-"profileModal"
-).style.display = "none";
-
-}
+function openProfile(){ document.getElementById("profileModal").style.display="flex"; }
+function closeProfile(){ document.getElementById("profileModal").style.display="none"; }
 
 function toggleFilters(){
-
-const filters =
-document.getElementById("filters");
-
-filters.style.display =
-filters.style.display==="grid"
-? "none"
-: "grid";
-
+const f=document.getElementById("filters");
+f.style.display = f.style.display==="grid" ? "none" : "grid";
 }
 
 function changeViewMode(){
-
-const cards =
-document.getElementById("cards");
-
-currentView++;
-
-if(currentView > 2){
-currentView = 0;
-}
-
-cards.classList.remove("compact");
-cards.classList.remove("list");
-
-if(currentView === 1){
-
-cards.classList.add("compact");
-
-}
-
-if(currentView === 2){
-
-cards.classList.add("list");
-
-}
-
+const cards=document.getElementById("cards");
+currentView = (currentView+1)%3;
+cards.classList.remove("compact","list");
+if(currentView===1) cards.classList.add("compact");
+if(currentView===2) cards.classList.add("list");
 }
 
 function getImageHTML(ad){
-
-if(ad.image){
-
-return `<img src="${ad.image}">`;
-
-}else{
-
-return `
-<div class="no-image">
-Нет фото
-</div>
-`;
-
-}
-
+return ad.image
+? `<img src="${ad.image}">`
+: `<div class="no-image">Нет фото</div>`;
 }
 
 function openAd(ad){
 
-const modal =
-document.createElement("div");
+const isOwner =
+ad.owner === (localStorage.getItem("telegramUsername") || "unknown");
 
-modal.className = "modal";
+const modal=document.createElement("div");
+modal.className="modal";
+modal.style.display="flex";
 
-modal.style.display = "flex";
-
-modal.innerHTML = `
+modal.innerHTML=`
 
 <div class="modal-content">
 
-${ad.image
-? `<img src="${ad.image}">`
-: `<div class="no-image">Нет фото</div>`
-}
+${ad.image ? `<img src="${ad.image}">` : `<div class="no-image">Нет фото</div>`}
 
 <div class="modal-body">
 
-<div class="card-title">
-${ad.title}
-</div>
+<div class="card-title">${ad.title}</div>
 
-<div>
-<b>Поколение:</b>
-${ad.generation}
-</div>
+<div><b>Поколение:</b> ${ad.generation}</div>
+<div><b>Редкость:</b> ${ad.rarity}</div>
+<div><b>Биом:</b> ${ad.biome}</div>
+<div><b>Описание:</b> ${ad.features || "Нет"}</div>
 
-<div>
-<b>Редкость:</b>
-${ad.rarity}
-</div>
+<div class="price">${ad.price.toFixed(2)} TON</div>
 
-<div>
-<b>Биом:</b>
-${ad.biome}
-</div>
+${isOwner ? `
+<button class="close-btn" style="background:#b00020"
+onclick="deleteAd(${ad.id}); this.closest('.modal').remove();">
+Удалить объявление
+</button>` : ""}
 
-<div>
-<b>Описание:</b>
-${ad.features || "Нет"}
-</div>
-
-<div class="price">
-${ad.price.toFixed(2)} TON
-</div>
-
-<button
-class="close-btn"
-onclick="this.closest('.modal').remove()"
->
-Закрыть
-</button>
+<button class="close-btn" onclick="this.closest('.modal').remove()">Закрыть</button>
 
 </div>
 
 </div>
-
 `;
 
 document.body.appendChild(modal);
-
 }
 
-document.getElementById("sellForm")
-.addEventListener("submit",e=>{
-
+document.getElementById("sellForm").addEventListener("submit", e=>{
 e.preventDefault();
 
-const file =
-document.getElementById("image")
-.files[0];
+const file=document.getElementById("image").files[0];
 
-const createAd = (
-imageData = null
-)=>{
-
-const ad = {
-
+const createAd=(imageData=null)=>{
+const ad={
 id:Date.now(),
-
-title:
-document.getElementById("title")
-.value,
-
+owner:localStorage.getItem("telegramUsername") || "unknown",
+title:document.getElementById("title").value,
 image:imageData,
-
-generation:
-document.getElementById(
-"generation"
-).value,
-
-rarity:
-document.getElementById(
-"rarity"
-).value,
-
-biome:
-document.getElementById(
-"biome"
-).value,
-
-features:
-document.getElementById(
-"features"
-).value,
-
-price:parseFloat(
-document.getElementById(
-"price"
-).value
-)
-
+generation:document.getElementById("generation").value,
+rarity:document.getElementById("rarity").value,
+biome:document.getElementById("biome").value,
+features:document.getElementById("features").value,
+price:parseFloat(document.getElementById("price").value)
 };
 
 ads.push(ad);
-
 saveAds();
-
 renderAds();
-
 alert("Объявление создано!");
-
-document.getElementById(
-"sellForm"
-).reset();
-
+document.getElementById("sellForm").reset();
 };
 
 if(file){
-
-const reader =
-new FileReader();
-
-reader.onload = ()=>{
-
-createAd(reader.result);
-
-};
-
+const reader=new FileReader();
+reader.onload=()=>createAd(reader.result);
 reader.readAsDataURL(file);
-
 }else{
-
-createAd(null);
-
+createAd();
 }
-
 });
 
-document.getElementById("sortBtn")
-.addEventListener("click",()=>{
-
+document.getElementById("sortBtn").addEventListener("click",()=>{
 ascending=!ascending;
-
-document.getElementById("sortBtn")
-.textContent =
-ascending
-? "Цена ↓"
-: "Цена ↑";
-
+document.getElementById("sortBtn").textContent =
+ascending ? "Цена ↓" : "Цена ↑";
 renderAds();
-
 });
 
-[
-"filterGeneration",
-"filterRarity",
-"filterBiome"
-].forEach(id=>{
-
-document.getElementById(id)
-.addEventListener(
-"change",
-renderAds
-);
-
+["filterGeneration","filterRarity","filterBiome"].forEach(id=>{
+document.getElementById(id).addEventListener("change",renderAds);
 });
 
 function renderAds(){
-
-const cards =
-document.getElementById("cards");
-
+const cards=document.getElementById("cards");
 cards.innerHTML="";
 
 let filtered=[...ads];
 
-const generation =
-document.getElementById(
-"filterGeneration"
-).value;
+const g=document.getElementById("filterGeneration").value;
+const r=document.getElementById("filterRarity").value;
+const b=document.getElementById("filterBiome").value;
 
-const rarity =
-document.getElementById(
-"filterRarity"
-).value;
+if(g) filtered=filtered.filter(a=>a.generation==g);
+if(r) filtered=filtered.filter(a=>a.rarity==r);
+if(b) filtered=filtered.filter(a=>a.biome==b);
 
-const biome =
-document.getElementById(
-"filterBiome"
-).value;
+filtered.sort((a,b)=>ascending?a.price-b.price:b.price-a.price);
 
-if(generation){
-
-filtered =
-filtered.filter(
-ad=>
-ad.generation==generation
-);
-
-}
-
-if(rarity){
-
-filtered =
-filtered.filter(
-ad=>
-ad.rarity==rarity
-);
-
-}
-
-if(biome){
-
-filtered =
-filtered.filter(
-ad=>
-ad.biome==biome
-);
-
-}
-
-filtered.sort((a,b)=>
-
-ascending
-? a.price-b.price
-: b.price-a.price
-
-);
-
-document.getElementById(
-"emptyText"
-).style.display =
-filtered.length
-? "none"
-: "block";
+document.getElementById("emptyText").style.display =
+filtered.length ? "none":"block";
 
 filtered.forEach(ad=>{
-
-const card =
-document.createElement("div");
-
+const card=document.createElement("div");
 card.className="card";
 
 card.innerHTML=`
-
 ${getImageHTML(ad)}
-
 <div class="card-content">
-
-<div class="card-title">
-${ad.title}
+<div class="card-title">${ad.title}</div>
+<div>${ad.rarity}</div>
+<div>${ad.biome}</div>
+<div class="price">${ad.price.toFixed(2)} TON</div>
 </div>
-
-<div>
-${ad.rarity}
-</div>
-
-<div>
-${ad.biome}
-</div>
-
-<div class="price">
-${ad.price.toFixed(2)} TON
-</div>
-
-</div>
-
 `;
 
-card.onclick = ()=>{
-
-openAd(ad);
-
-};
-
+card.onclick=()=>openAd(ad);
 cards.appendChild(card);
-
 });
-
 }
 
 function renderMyAds(){
-
-const myCards =
-document.getElementById("myCards");
-
+const myCards=document.getElementById("myCards");
 myCards.innerHTML="";
 
-const myAds = ads;
+const myAds=ads;
 
-document.getElementById(
-"myEmpty"
-).style.display =
-myAds.length
-? "none"
-: "block";
+document.getElementById("myEmpty").style.display =
+myAds.length ? "none":"block";
 
 myAds.forEach(ad=>{
-
-const card =
-document.createElement("div");
-
+const card=document.createElement("div");
 card.className="card";
 
 card.innerHTML=`
-
 ${getImageHTML(ad)}
-
 <div class="card-content">
-
-<div class="card-title">
-${ad.title}
+<div class="card-title">${ad.title}</div>
+<div class="price">${ad.price.toFixed(2)} TON</div>
 </div>
-
-<div class="price">
-${ad.price.toFixed(2)} TON
-</div>
-
-</div>
-
 `;
 
-card.onclick = ()=>{
-
-openAd(ad);
-
-};
-
+card.onclick=()=>openAd(ad);
 myCards.appendChild(card);
-
 });
-
 }
 
 showSection("buy");
