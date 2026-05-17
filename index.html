@@ -62,12 +62,25 @@ transition:.2s;
 color:white;
 }
 
-.top-btn:hover{transform:scale(1.05);}
+.top-btn:hover{
+transform:scale(1.05);
+}
 
-.buy-btn{background:#4caf50;}
-.sell-btn{background:#ff9800;}
-.my-btn{background:#2196f3;}
-.profile-btn{background:#000;}
+.buy-btn{
+background:#4caf50;
+}
+
+.sell-btn{
+background:#ff9800;
+}
+
+.my-btn{
+background:#2196f3;
+}
+
+.profile-btn{
+background:#000;
+}
 
 .gray-btn{
 background:#444;
@@ -77,6 +90,10 @@ min-height:28px;
 min-width:auto;
 font-size:12px;
 font-weight:700;
+}
+
+.centered-my{
+min-width:260px;
 }
 
 .small-profile{
@@ -103,7 +120,9 @@ margin:auto;
 padding:20px;
 }
 
-.hidden{display:none;}
+.hidden{
+display:none;
+}
 
 form{
 background:#1f1f1f;
@@ -114,7 +133,9 @@ flex-direction:column;
 gap:15px;
 }
 
-input,select,textarea{
+input,
+select,
+textarea{
 padding:14px;
 border:none;
 border-radius:14px;
@@ -122,7 +143,10 @@ outline:none;
 font-size:16px;
 }
 
-textarea{resize:none;height:90px;}
+textarea{
+resize:none;
+height:90px;
+}
 
 .submit-btn{
 border:none;
@@ -159,7 +183,9 @@ overflow:hidden;
 transition:.2s;
 }
 
-.card:hover{transform:translateY(-5px);}
+.card:hover{
+transform:translateY(-5px);
+}
 
 .card img{
 width:100%;
@@ -184,8 +210,16 @@ flex-direction:column;
 gap:8px;
 }
 
-.card-title{font-size:22px;font-weight:bold;}
-.price{color:#4caf50;font-size:24px;font-weight:bold;}
+.card-title{
+font-size:22px;
+font-weight:bold;
+}
+
+.price{
+color:#4caf50;
+font-size:24px;
+font-weight:bold;
+}
 
 .empty{
 margin-top:70px;
@@ -196,24 +230,34 @@ opacity:.85;
 
 </style>
 </head>
-
 <body>
 
 <header>
 
 <div class="top-row">
 
-<button class="top-btn buy-btn" onclick="showSection('buy')">Купить</button>
+<button class="top-btn buy-btn" onclick="showSection('buy')">
+Купить
+</button>
 
-<button class="top-btn sell-btn" onclick="showSection('sell')">Продать</button>
+<button class="top-btn sell-btn" onclick="showSection('sell')">
+Продать
+</button>
 
-<button class="top-btn profile-btn small-profile" onclick="showProfile()">👤</button>
+<button
+class="top-btn profile-btn small-profile"
+>
+👤
+</button>
 
 </div>
 
 <div class="center-row">
 
-<button class="top-btn my-btn centered-my" onclick="showSection('my')">
+<button
+class="top-btn my-btn centered-my"
+onclick="showSection('my')"
+>
 Мои объявления
 </button>
 
@@ -227,9 +271,18 @@ opacity:.85;
 
 <form id="sellForm">
 
-<input type="text" id="title" placeholder="Название объявления" required>
+<input
+type="text"
+id="title"
+placeholder="Название объявления"
+required
+>
 
-<input type="file" id="image" accept="image/*">
+<input
+type="file"
+id="image"
+accept="image/*"
+>
 
 <select id="generation" required>
 <option value="">Поколение</option>
@@ -253,14 +306,26 @@ opacity:.85;
 <option>Море</option>
 <option>Грядки</option>
 <option>Лёд</option>
-<option>Эхо</option>
 </select>
 
-<textarea id="features" maxlength="150" placeholder="Описание"></textarea>
+<textarea
+id="features"
+maxlength="150"
+placeholder="Описание"
+></textarea>
 
-<input type="number" id="price" placeholder="Цена TON" step="0.01" min="0.01" required>
+<input
+type="number"
+id="price"
+placeholder="Цена TON"
+step="0.01"
+min="0.01"
+required
+>
 
-<button class="submit-btn" type="submit">Создать объявление</button>
+<button class="submit-btn" type="submit">
+Создать объявление
+</button>
 
 </form>
 
@@ -268,11 +333,33 @@ opacity:.85;
 
 <section id="buySection" class="hidden">
 
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px;">
+<div style="
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin-bottom:15px;
+">
 
-<button class="top-btn gray-btn" onclick="toggleFilters()">Фильтры</button>
+<button
+class="top-btn gray-btn"
+onclick="toggleFilters()"
+>
+Фильтры
+</button>
 
-<button class="top-btn gray-btn" id="sortBtn">Цена ↓</button>
+<button
+class="top-btn gray-btn"
+id="sortBtn"
+>
+Цена ↓
+</button>
+
+<button
+class="top-btn gray-btn"
+onclick="changeViewMode()"
+>
+Вид
+</button>
 
 </div>
 
@@ -300,13 +387,15 @@ opacity:.85;
 <option>Море</option>
 <option>Грядки</option>
 <option>Лёд</option>
-<option>Эхо</option>
 </select>
 
 </div>
 
 <div class="cards" id="cards"></div>
-<div class="empty" id="emptyText">Пока нет объявлений</div>
+
+<div class="empty" id="emptyText">
+Пока нет объявлений
+</div>
 
 </section>
 
@@ -316,28 +405,23 @@ opacity:.85;
 
 <div class="empty" id="myEmpty">
 
-<div style="display:flex;flex-direction:column;align-items:center;gap:20px;">
-<div>У вас пока нет объявлений</div>
+<div style="
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:20px;
+">
 
-<button class="top-btn sell-btn" onclick="showSection('sell')">
+<div>
+У вас пока нет объявлений
+</div>
+
+<button
+class="top-btn sell-btn"
+onclick="showSection('sell')"
+>
 Создать объявление
 </button>
-
-</div>
-
-</div>
-
-</section>
-
-<section id="profileSection" class="hidden">
-
-<div class="container">
-
-<div style="background:#1f1f1f;padding:20px;border-radius:20px;display:flex;flex-direction:column;gap:10px;">
-
-<h2>Профиль</h2>
-
-<div id="profileInfo"></div>
 
 </div>
 
@@ -350,12 +434,18 @@ opacity:.85;
 <script>
 
 let tg = window.Telegram.WebApp;
+
 tg.expand();
 
 const user = tg.initDataUnsafe.user;
 
 if(user){
-localStorage.setItem("telegramUsername", user.username || "unknown");
+
+localStorage.setItem(
+"telegramUsername",
+user.username || "unknown"
+);
+
 }
 
 const generationSelects = [
@@ -364,148 +454,313 @@ document.getElementById("filterGeneration")
 ];
 
 generationSelects.forEach(select=>{
+
 for(let i=1;i<=10;i++){
-const option = document.createElement("option");
+
+const option =
+document.createElement("option");
+
 option.value=i;
-option.textContent="Поколение "+i;
+
+option.textContent=
+"Поколение "+i;
+
 select.appendChild(option);
+
 }
+
 });
 
-let ads = JSON.parse(localStorage.getItem("ads")) || [];
+let ads =
+JSON.parse(localStorage.getItem("ads"))
+|| [];
+
 let ascending = true;
 
 function saveAds(){
-localStorage.setItem("ads", JSON.stringify(ads));
+
+localStorage.setItem(
+"ads",
+JSON.stringify(ads)
+);
+
 }
 
 function showSection(type){
 
-document.getElementById("sellSection").classList.add("hidden");
-document.getElementById("buySection").classList.add("hidden");
-document.getElementById("mySection").classList.add("hidden");
-document.getElementById("profileSection").classList.add("hidden");
+document.getElementById("sellSection")
+.classList.add("hidden");
 
-if(type==="sell") document.getElementById("sellSection").classList.remove("hidden");
-if(type==="buy"){ document.getElementById("buySection").classList.remove("hidden"); renderAds(); }
-if(type==="my"){ document.getElementById("mySection").classList.remove("hidden"); renderMyAds(); }
+document.getElementById("buySection")
+.classList.add("hidden");
+
+document.getElementById("mySection")
+.classList.add("hidden");
+
+if(type==="sell"){
+
+document.getElementById("sellSection")
+.classList.remove("hidden");
 
 }
 
-function showProfile(){
+if(type==="buy"){
 
-document.getElementById("sellSection").classList.add("hidden");
-document.getElementById("buySection").classList.add("hidden");
-document.getElementById("mySection").classList.add("hidden");
-document.getElementById("profileSection").classList.remove("hidden");
+document.getElementById("buySection")
+.classList.remove("hidden");
 
-const user = tg.initDataUnsafe.user;
+renderAds();
 
-document.getElementById("profileInfo").innerHTML = user ? `
-<div>👤 ${user.username || "Без username"}</div>
-<div>🆔 ${user.id}</div>
-` : `<div>Пользователь не найден</div>`;
+}
+
+if(type==="my"){
+
+document.getElementById("mySection")
+.classList.remove("hidden");
+
+renderMyAds();
+
+}
 
 }
 
 function toggleFilters(){
-const filters = document.getElementById("filters");
-filters.style.display = filters.style.display==="grid" ? "none" : "grid";
+
+const filters =
+document.getElementById("filters");
+
+filters.style.display =
+filters.style.display==="grid"
+? "none"
+: "grid";
+
 }
+
+function changeViewMode(){}
 
 function getImageHTML(ad){
-if(ad.image) return `<img src="${ad.image}">`;
-return `<div class="no-image">Нет фото</div>`;
+
+if(ad.image){
+
+return `<img src="${ad.image}">`;
+
+}else{
+
+return `
+<div class="no-image">
+Нет фото
+</div>
+`;
+
 }
 
-document.getElementById("sellForm").addEventListener("submit",e=>{
+}
+
+document.getElementById("sellForm")
+.addEventListener("submit",e=>{
+
 e.preventDefault();
 
-const file = document.getElementById("image").files[0];
+const file =
+document.getElementById("image")
+.files[0];
 
-const createAd = (imageData=null)=>{
+const createAd = (
+imageData = null
+)=>{
 
 const ad = {
+
 id:Date.now(),
-title:document.getElementById("title").value,
+
+title:
+document.getElementById("title")
+.value,
+
 image:imageData,
-generation:document.getElementById("generation").value,
-rarity:document.getElementById("rarity").value,
-biome:document.getElementById("biome").value,
-features:document.getElementById("features").value,
-price:parseFloat(document.getElementById("price").value)
+
+generation:
+document.getElementById(
+"generation"
+).value,
+
+rarity:
+document.getElementById(
+"rarity"
+).value,
+
+biome:
+document.getElementById(
+"biome"
+).value,
+
+features:
+document.getElementById(
+"features"
+).value,
+
+price:parseFloat(
+document.getElementById(
+"price"
+).value
+)
+
 };
 
 ads.push(ad);
+
 saveAds();
+
 alert("Объявление создано!");
-document.getElementById("sellForm").reset();
+
+document.getElementById(
+"sellForm"
+).reset();
+
 };
 
 if(file){
-const reader = new FileReader();
-reader.onload=()=>createAd(reader.result);
+
+const reader =
+new FileReader();
+
+reader.onload = ()=>{
+
+createAd(reader.result);
+
+};
+
 reader.readAsDataURL(file);
-}else createAd(null);
+
+}else{
+
+createAd(null);
+
+}
 
 });
 
-document.getElementById("sortBtn").addEventListener("click",()=>{
+document.getElementById("sortBtn")
+.addEventListener("click",()=>{
+
 ascending=!ascending;
-document.getElementById("sortBtn").textContent = ascending ? "Цена ↓" : "Цена ↑";
+
+document.getElementById("sortBtn")
+.textContent =
+ascending
+? "Цена ↓"
+: "Цена ↑";
+
 renderAds();
+
 });
 
 function renderAds(){
 
-const cards=document.getElementById("cards");
+const cards =
+document.getElementById("cards");
+
 cards.innerHTML="";
 
 let filtered=[...ads];
 
-filtered.sort((a,b)=>ascending ? a.price-b.price : b.price-a.price);
+filtered.sort((a,b)=>
 
-document.getElementById("emptyText").style.display = filtered.length ? "none" : "block";
+ascending
+? a.price-b.price
+: b.price-a.price
+
+);
+
+document.getElementById(
+"emptyText"
+).style.display =
+filtered.length
+? "none"
+: "block";
 
 filtered.forEach(ad=>{
-const card=document.createElement("div");
+
+const card =
+document.createElement("div");
+
 card.className="card";
 
 card.innerHTML=`
+
 ${getImageHTML(ad)}
+
 <div class="card-content">
-<div class="card-title">${ad.title}</div>
-<div>${ad.rarity}</div>
-<div>${ad.biome}</div>
-<div class="price">${ad.price.toFixed(2)} TON</div>
+
+<div class="card-title">
+${ad.title}
 </div>
+
+<div>
+${ad.rarity}
+</div>
+
+<div>
+${ad.biome}
+</div>
+
+<div class="price">
+${ad.price.toFixed(2)} TON
+</div>
+
+</div>
+
 `;
 
 cards.appendChild(card);
+
 });
 
 }
 
 function renderMyAds(){
 
-const myCards=document.getElementById("myCards");
+const myCards =
+document.getElementById("myCards");
+
 myCards.innerHTML="";
 
-document.getElementById("myEmpty").style.display = ads.length ? "none" : "block";
+const myAds = ads;
 
-ads.forEach(ad=>{
-const card=document.createElement("div");
+document.getElementById(
+"myEmpty"
+).style.display =
+myAds.length
+? "none"
+: "block";
+
+myAds.forEach(ad=>{
+
+const card =
+document.createElement("div");
+
 card.className="card";
 
 card.innerHTML=`
+
 ${getImageHTML(ad)}
+
 <div class="card-content">
-<div class="card-title">${ad.title}</div>
-<div class="price">${ad.price.toFixed(2)} TON</div>
+
+<div class="card-title">
+${ad.title}
 </div>
+
+<div class="price">
+${ad.price.toFixed(2)} TON
+</div>
+
+</div>
+
 `;
 
 myCards.appendChild(card);
+
 });
 
 }
@@ -513,6 +768,5 @@ myCards.appendChild(card);
 showSection("buy");
 
 </script>
-
 </body>
 </html>
