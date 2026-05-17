@@ -75,6 +75,24 @@ color:white;
 .my-btn{background:#2196f3;}
 .profile-btn{background:#000;}
 
+/* 👤 Профиль 1.5x и квадрат */
+.small-profile{
+position:absolute;
+right:0;
+top:0;
+width:42px;   /* было 28px */
+height:42px;  /* было 28px */
+border-radius:10px;
+font-size:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#000;
+padding:0;
+min-width:42px;
+min-height:42px;
+}
+
 .gray-btn{
 background:#444;
 border-radius:12px;
@@ -83,24 +101,6 @@ min-height:28px;
 min-width:auto;
 font-size:12px;
 font-weight:700;
-}
-
-/* 👇 обновлённая кнопка профиля */
-.small-profile{
-position:absolute;
-right:0;
-top:0;
-width:28px;
-height:28px;
-border-radius:8px;
-font-size:14px;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#000;
-padding:0;
-min-width:28px;
-min-height:28px;
 }
 
 .centered-my{min-width:260px;}
@@ -164,10 +164,6 @@ display:grid;
 grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
 gap:20px;
 }
-
-.cards.compact{grid-template-columns:repeat(auto-fit,minmax(180px,1fr));}
-
-.cards.list{display:flex;flex-direction:column;}
 
 .card{
 background:#1f1f1f;
@@ -296,7 +292,6 @@ font-size:18px;
 
 <button class="top-btn buy-btn" onclick="showSection('buy')">Купить</button>
 <button class="top-btn sell-btn" onclick="showSection('sell')">Продать</button>
-
 <button class="top-btn profile-btn small-profile" onclick="openProfile()">👤</button>
 
 </div>
@@ -317,7 +312,6 @@ font-size:18px;
 
 <input type="text" id="title" placeholder="Название объявления" required>
 
-<!-- 👇 заменён input file -->
 <label style="display:flex;flex-direction:column;gap:6px;color:#aaa;font-size:14px;">
 Фото
 <input type="file" id="image" accept="image/*">
@@ -360,41 +354,6 @@ font-size:18px;
 
 <section id="buySection" class="hidden">
 
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px;">
-<button class="top-btn gray-btn" onclick="toggleFilters()">Фильтры</button>
-<button class="top-btn gray-btn" id="sortBtn">Цена ↓</button>
-<button class="top-btn gray-btn" onclick="changeViewMode()">Вид</button>
-</div>
-
-<div class="filters" id="filters">
-
-<select id="filterGeneration">
-<option value="">Все поколения</option>
-</select>
-
-<select id="filterRarity">
-<option value="">Любая редкость</option>
-<option>Обычный</option>
-<option>Редкий</option>
-<option>Мифический</option>
-<option>Легендарный</option>
-<option>Мутант</option>
-</select>
-
-<select id="filterBiome">
-<option value="">Любой биом</option>
-<option>Луг</option>
-<option>Лес</option>
-<option>Пустыня</option>
-<option>Горы</option>
-<option>Море</option>
-<option>Грядки</option>
-<option>Лёд</option>
-<option>Эхо</option>
-</select>
-
-</div>
-
 <div class="cards" id="cards"></div>
 <div class="empty" id="emptyText">Пока нет объявлений</div>
 
@@ -436,6 +395,22 @@ localStorage.setItem("telegramUsername", user.username || "unknown");
 localStorage.setItem("telegramName", user.first_name || "Пользователь");
 }
 
+/* ===== ПОЛКОРРЕКТНОЕ ПОКОЛЕНИЕ 1–10 ===== */
+function initGenerations(){
+const gens = [document.getElementById("generation")];
+
+gens.forEach(select=>{
+for(let i=1;i<=10;i++){
+const opt=document.createElement("option");
+opt.value=String(i);
+opt.textContent="Поколение "+i;
+select.appendChild(opt);
+}
+});
+}
+initGenerations();
+
+/* профиль */
 document.getElementById("profileName").textContent =
 "Имя: " + (localStorage.getItem("telegramName") || "Пользователь");
 
@@ -443,22 +418,12 @@ document.getElementById("profileUsername").textContent =
 "@" + (localStorage.getItem("telegramUsername") || "unknown");
 
 let ads = JSON.parse(localStorage.getItem("ads")) || [];
-let ascending = true;
-let currentView = 0;
 
 function saveAds(){
 localStorage.setItem("ads", JSON.stringify(ads));
 }
 
-function deleteAd(id){
-ads = ads.filter(a => a.id !== id);
-saveAds();
-renderAds();
-renderMyAds();
-}
-
 function showSection(type){
-
 document.getElementById("sellSection").classList.add("hidden");
 document.getElementById("buySection").classList.add("hidden");
 document.getElementById("mySection").classList.add("hidden");
@@ -466,42 +431,20 @@ document.getElementById("mySection").classList.add("hidden");
 if(type==="sell") document.getElementById("sellSection").classList.remove("hidden");
 if(type==="buy"){ document.getElementById("buySection").classList.remove("hidden"); renderAds(); }
 if(type==="my"){ document.getElementById("mySection").classList.remove("hidden"); renderMyAds(); }
-
 }
 
 function openProfile(){ document.getElementById("profileModal").style.display="flex"; }
 function closeProfile(){ document.getElementById("profileModal").style.display="none"; }
 
-function toggleFilters(){
-const f=document.getElementById("filters");
-f.style.display = f.style.display==="grid" ? "none" : "grid";
-}
-
-function changeViewMode(){
-const cards=document.getElementById("cards");
-currentView = (currentView+1)%3;
-cards.classList.remove("compact","list");
-if(currentView===1) cards.classList.add("compact");
-if(currentView===2) cards.classList.add("list");
-}
-
-function getImageHTML(ad){
-return ad.image
-? `<img src="${ad.image}">`
-: `<div class="no-image">Нет фото</div>`;
-}
-
 function openAd(ad){
 
-const isOwner =
-ad.owner === (localStorage.getItem("telegramUsername") || "unknown");
+const isOwner = ad.owner === (localStorage.getItem("telegramUsername") || "unknown");
 
 const modal=document.createElement("div");
 modal.className="modal";
 modal.style.display="flex";
 
 modal.innerHTML=`
-
 <div class="modal-content">
 
 ${ad.image ? `<img src="${ad.image}">` : `<div class="no-image">Нет фото</div>`}
@@ -517,33 +460,40 @@ ${ad.image ? `<img src="${ad.image}">` : `<div class="no-image">Нет фото<
 
 <div class="price">${ad.price.toFixed(2)} TON</div>
 
-${isOwner ? `
-<button class="close-btn" style="background:#b00020"
-onclick="deleteAd(${ad.id}); this.closest('.modal').remove();">
+${isOwner ? `<button class="close-btn" style="background:#b00020"
+onclick="deleteAd(${ad.id});this.closest('.modal').remove();">
 Удалить объявление
 </button>` : ""}
 
 <button class="close-btn" onclick="this.closest('.modal').remove()">Закрыть</button>
 
 </div>
-
 </div>
 `;
 
 document.body.appendChild(modal);
 }
 
+function deleteAd(id){
+ads = ads.filter(a=>a.id!==id);
+saveAds();
+renderAds();
+renderMyAds();
+}
+
+/* CREATE AD */
 document.getElementById("sellForm").addEventListener("submit", e=>{
 e.preventDefault();
 
 const file=document.getElementById("image").files[0];
 
-const createAd=(imageData=null)=>{
+const createAd=(img=null)=>{
+
 const ad={
 id:Date.now(),
 owner:localStorage.getItem("telegramUsername") || "unknown",
 title:document.getElementById("title").value,
-image:imageData,
+image:img,
 generation:document.getElementById("generation").value,
 rarity:document.getElementById("rarity").value,
 biome:document.getElementById("biome").value,
@@ -559,50 +509,25 @@ document.getElementById("sellForm").reset();
 };
 
 if(file){
-const reader=new FileReader();
-reader.onload=()=>createAd(reader.result);
-reader.readAsDataURL(file);
-}else{
-createAd();
-}
+const r=new FileReader();
+r.onload=()=>createAd(r.result);
+r.readAsDataURL(file);
+}else createAd();
 });
 
-document.getElementById("sortBtn").addEventListener("click",()=>{
-ascending=!ascending;
-document.getElementById("sortBtn").textContent =
-ascending ? "Цена ↓" : "Цена ↑";
-renderAds();
-});
-
-["filterGeneration","filterRarity","filterBiome"].forEach(id=>{
-document.getElementById(id).addEventListener("change",renderAds);
-});
-
+/* RENDER */
 function renderAds(){
 const cards=document.getElementById("cards");
 cards.innerHTML="";
 
-let filtered=[...ads];
-
-const g=document.getElementById("filterGeneration").value;
-const r=document.getElementById("filterRarity").value;
-const b=document.getElementById("filterBiome").value;
-
-if(g) filtered=filtered.filter(a=>a.generation==g);
-if(r) filtered=filtered.filter(a=>a.rarity==r);
-if(b) filtered=filtered.filter(a=>a.biome==b);
-
-filtered.sort((a,b)=>ascending?a.price-b.price:b.price-a.price);
-
 document.getElementById("emptyText").style.display =
-filtered.length ? "none":"block";
+ads.length ? "none":"block";
 
-filtered.forEach(ad=>{
-const card=document.createElement("div");
-card.className="card";
-
-card.innerHTML=`
-${getImageHTML(ad)}
+ads.forEach(ad=>{
+const c=document.createElement("div");
+c.className="card";
+c.innerHTML=`
+${ad.image?`<img src="${ad.image}">`:`<div class="no-image">Нет фото</div>`}
 <div class="card-content">
 <div class="card-title">${ad.title}</div>
 <div>${ad.rarity}</div>
@@ -610,35 +535,30 @@ ${getImageHTML(ad)}
 <div class="price">${ad.price.toFixed(2)} TON</div>
 </div>
 `;
-
-card.onclick=()=>openAd(ad);
-cards.appendChild(card);
+c.onclick=()=>openAd(ad);
+cards.appendChild(c);
 });
 }
 
 function renderMyAds(){
-const myCards=document.getElementById("myCards");
-myCards.innerHTML="";
-
-const myAds=ads;
+const cards=document.getElementById("myCards");
+cards.innerHTML="";
 
 document.getElementById("myEmpty").style.display =
-myAds.length ? "none":"block";
+ads.length ? "none":"block";
 
-myAds.forEach(ad=>{
-const card=document.createElement("div");
-card.className="card";
-
-card.innerHTML=`
-${getImageHTML(ad)}
+ads.forEach(ad=>{
+const c=document.createElement("div");
+c.className="card";
+c.innerHTML=`
+${ad.image?`<img src="${ad.image}">`:`<div class="no-image">Нет фото</div>`}
 <div class="card-content">
 <div class="card-title">${ad.title}</div>
 <div class="price">${ad.price.toFixed(2)} TON</div>
 </div>
 `;
-
-card.onclick=()=>openAd(ad);
-myCards.appendChild(card);
+c.onclick=()=>openAd(ad);
+cards.appendChild(c);
 });
 }
 
