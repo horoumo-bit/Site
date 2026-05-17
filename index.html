@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TON Market</title>
+<title>TON Marketplace</title>
 
 <style>
 
@@ -26,9 +26,16 @@ header{
     z-index:100;
     background:#1b1b1b;
     display:flex;
-    justify-content:center;
+    justify-content:space-between;
+    align-items:center;
     gap:15px;
-    padding:20px;
+    padding:15px 20px;
+    flex-wrap:wrap;
+}
+
+.header-buttons{
+    display:flex;
+    gap:15px;
     flex-wrap:wrap;
 }
 
@@ -51,6 +58,29 @@ header{
     transform:scale(1.05);
 }
 
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.03);}
+    100%{transform:scale(1);}
+}
+
+@keyframes glow{
+    0%{box-shadow:0 0 0px #00aaff;}
+    50%{box-shadow:0 0 20px #00aaff;}
+    100%{box-shadow:0 0 0px #00aaff;}
+}
+
 .container{
     width:95%;
     max-width:1300px;
@@ -71,7 +101,7 @@ form{
     gap:15px;
 }
 
-input, select, textarea{
+input,select,textarea{
     padding:13px;
     border:none;
     border-radius:10px;
@@ -92,6 +122,16 @@ textarea{
     border-radius:12px;
     font-size:18px;
     font-weight:bold;
+    cursor:pointer;
+}
+
+.filter-toggle{
+    margin-bottom:15px;
+    background:#262626;
+    border:none;
+    color:white;
+    padding:10px 14px;
+    border-radius:10px;
     cursor:pointer;
 }
 
@@ -121,6 +161,39 @@ textarea{
     gap:20px;
 }
 
+.cards.compact{
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+}
+
+.cards.compact img,
+.cards.compact .no-image{
+    display:none;
+}
+
+.cards.list{
+    display:flex;
+    flex-direction:column;
+}
+
+.cards.list .card{
+    animation:fadeIn 0.4s ease;
+
+    display:flex;
+    align-items:center;
+}
+
+.cards.list img,
+.cards.list .no-image{
+    display:none;
+}
+
+.cards.list .card-content{
+    width:100%;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+}
+
 .card{
     background:#1f1f1f;
     border-radius:18px;
@@ -130,7 +203,28 @@ textarea{
 }
 
 .card:hover{
-    transform:translateY(-5px);
+    transform:translateY(-8px) scale(1.02);
+    box-shadow:0 10px 30px rgba(0,170,255,0.25);
+}
+
+.top-btn:hover{
+    transform:scale(1.08);
+    animation:pulse 0.8s infinite;
+}
+
+.submit-btn:hover,
+.sort-btn:hover,
+.filter-toggle:hover{
+    animation:glow 1.2s infinite;
+    transform:translateY(-2px);
+}
+
+.modal-content{
+    animation:fadeIn 0.25s ease;
+}
+
+.warning-box{
+    animation:fadeIn 0.25s ease;
 }
 
 .card img{
@@ -147,7 +241,6 @@ textarea{
     justify-content:center;
     align-items:center;
     color:#777;
-    font-size:22px;
 }
 
 .card-content{
@@ -170,12 +263,13 @@ textarea{
 
 .empty{
     text-align:center;
-    opacity:0.7;
     margin-top:40px;
-    font-size:22px;
+    opacity:0.7;
 }
 
-.modal{
+.modal,
+.warning-modal,
+.profile-modal{
     position:fixed;
     inset:0;
     background:rgba(0,0,0,0.8);
@@ -186,12 +280,15 @@ textarea{
     padding:20px;
 }
 
-.modal-content{
+.modal-content,
+.warning-box,
+.profile-content{
     background:#1f1f1f;
     width:100%;
     max-width:700px;
     border-radius:20px;
     overflow:hidden;
+    padding:20px;
 }
 
 .modal img{
@@ -201,30 +298,10 @@ textarea{
 }
 
 .modal-body{
-    padding:20px;
     display:flex;
     flex-direction:column;
     gap:12px;
-}
-
-.close-btn{
-    background:red;
-    color:white;
-    border:none;
-    padding:12px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:bold;
-}
-
-.remove-btn{
-    background:#ff3b3b;
-    border:none;
-    color:white;
-    padding:12px;
-    border-radius:10px;
-    cursor:pointer;
-    font-weight:bold;
+    margin-top:15px;
 }
 
 .telegram-link{
@@ -233,25 +310,26 @@ textarea{
     font-weight:bold;
 }
 
-.warning-modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.8);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:2000;
-    padding:20px;
+.close-btn,
+.remove-btn,
+.continue-btn,
+.cancel-btn,
+.never-btn,
+.save-profile{
+    border:none;
+    color:white;
+    padding:12px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
 }
 
-.warning-box{
-    background:#1f1f1f;
-    max-width:450px;
-    width:100%;
-    padding:25px;
-    border-radius:18px;
-    text-align:center;
-}
+.close-btn{background:red;}
+.remove-btn{background:#ff3b3b;}
+.continue-btn{background:#00aaff;}
+.cancel-btn{background:red;}
+.never-btn{background:#666;}
+.save-profile{background:#00aaff;}
 
 .warning-buttons{
     display:flex;
@@ -262,24 +340,13 @@ textarea{
 
 .warning-buttons button{
     flex:1;
-    border:none;
-    padding:12px;
-    border-radius:10px;
-    cursor:pointer;
-    color:white;
-    font-weight:bold;
 }
 
-.continue-btn{
-    background:#00aaff;
-}
-
-.cancel-btn{
-    background:#ff3b3b;
-}
-
-.never-btn{
-    background:#666;
+.profile-content{
+    max-width:450px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
 }
 
 </style>
@@ -287,6 +354,8 @@ textarea{
 <body>
 
 <header>
+
+<div class="header-buttons">
 
 <button class="top-btn buy-btn" onclick="showSection('buy')">
 Купить
@@ -300,6 +369,8 @@ textarea{
 Мои объявления
 </button>
 
+</div>
+
 </header>
 
 <div class="container">
@@ -310,7 +381,7 @@ textarea{
 
 <input type="text" id="title" placeholder="Название объявления" required>
 
-<input type="text" id="telegram" placeholder="Telegram Username (@username)" required>
+
 
 <input type="file" id="image" accept="image/*">
 
@@ -338,21 +409,9 @@ textarea{
 <option>Лёд</option>
 </select>
 
-<textarea
-id="features"
-maxlength="150"
-placeholder="Описание / особенности (до 150 символов)"
-required
-></textarea>
+<textarea id="features" maxlength="150" placeholder="Описание" required></textarea>
 
-<input
-type="number"
-id="price"
-placeholder="Цена TON"
-step="0.01"
-min="0.01"
-required
->
+<input type="number" id="price" placeholder="Цена TON" step="0.01" min="0.01" required>
 
 <button class="submit-btn" type="submit">
 Создать объявление
@@ -362,9 +421,37 @@ required
 
 </section>
 
+<div id="loginScreen" style="position:fixed;inset:0;background:#111;z-index:5000;display:flex;justify-content:center;align-items:center;padding:20px;">
+
+<div style="background:#1f1f1f;padding:40px;border-radius:24px;text-align:center;max-width:420px;width:100%;animation:fadeIn 0.5s ease;">
+
+<h1 style="margin-bottom:15px;font-size:34px;">
+Войдите в аккаунт
+</h1>
+
+<p style="opacity:0.8;margin-bottom:25px;">
+Для использования площадки войдите через Telegram
+</p>
+
+<script async src="https://telegram.org/js/telegram-widget.js?22"
+        data-telegram-login="@DemzooK_Bot"
+        data-size="large"
+        data-userpic="false"
+        data-radius="12"
+        data-request-access="write"
+        data-onauth="onTelegramAuth(user)">
+</script>
+
+</div>
+</div>
+
 <section id="buySection" class="hidden">
 
-<div class="filters">
+<button class="filter-toggle" onclick="toggleFilters()">
+⬇ Фильтры
+</button>
+
+<div class="filters" style="display:none;">
 
 <select id="filterGeneration">
 <option value="">Все поколения</option>
@@ -394,6 +481,10 @@ required
 Цена: дешевле
 </button>
 
+<button class="sort-btn" onclick="changeViewMode()">
+Сменить вид
+</button>
+
 </div>
 
 <div class="cards" id="cards"></div>
@@ -405,13 +496,10 @@ required
 </section>
 
 <section id="mySection" class="hidden">
-
 <div class="cards" id="myCards"></div>
-
 <div class="empty" id="myEmpty">
 У вас пока нет объявлений
 </div>
-
 </section>
 
 </div>
@@ -431,12 +519,7 @@ required
 <div id="modalFeatures"></div>
 <div id="modalPrice" class="price"></div>
 
-<a
-id="modalTelegram"
-class="telegram-link"
-href="#"
->
-</a>
+<a id="modalTelegram" class="telegram-link" href="#"></a>
 
 <button class="remove-btn hidden" id="removeBtn">
 Снять с продажи
@@ -451,7 +534,6 @@ href="#"
 </div>
 
 <div class="warning-modal" id="warningModal">
-
 <div class="warning-box">
 
 <h3>
@@ -477,6 +559,23 @@ href="#"
 </button>
 
 </div>
+</div>
+</div>
+
+<div class="profile-modal" id="profileModal">
+<div class="profile-content">
+
+<h2>Профиль</h2>
+
+<input type="text" id="profileTelegram" placeholder="@username">
+
+<button class="save-profile" onclick="saveProfile()">
+Подключить Telegram
+</button>
+
+<button class="close-btn" onclick="closeProfile()">
+Закрыть
+</button>
 
 </div>
 </div>
@@ -489,14 +588,10 @@ const generationSelects = [
 ];
 
 generationSelects.forEach(select => {
-
-    for(let i = 1; i <= 10; i++){
-
+    for(let i=1;i<=10;i++){
         const option = document.createElement("option");
-
         option.value = i;
         option.textContent = "Поколение " + i;
-
         select.appendChild(option);
     }
 });
@@ -505,6 +600,8 @@ let ads = JSON.parse(localStorage.getItem("ads")) || [];
 
 let ascending = true;
 let telegramLink = "";
+let filtersHidden = false;
+let currentView = 0;
 
 function saveAds(){
     localStorage.setItem("ads", JSON.stringify(ads));
@@ -531,25 +628,79 @@ function showSection(type){
     }
 }
 
-function getImageHTML(ad){
+function onTelegramAuth(user){
 
-    if(ad.image){
+    localStorage.setItem(
+        "telegramUsername",
+        user.username || "unknown"
+    );
 
-        return `<img src="${ad.image}">`;
+    localStorage.setItem(
+        "telegramName",
+        user.first_name || "Пользователь"
+    );
 
-    }else{
+    document.getElementById("loginScreen")
+        .style.display = "none";
+}
 
-        return `
-            <div class="no-image">
-                Нет фото
-            </div>
-        `;
+window.onload = () => {
+
+    const username = localStorage.getItem("telegramUsername");
+
+    if(username){
+
+        document.getElementById("loginScreen")
+            .style.display = "none";
+    }
+};
+
+function toggleFilters(){
+
+    const filters = document.querySelector(".filters");
+
+    filtersHidden = !filtersHidden;
+
+    filters.style.display = filtersHidden ? "none" : "grid";
+}
+
+function changeViewMode(){
+
+    currentView++;
+
+    if(currentView > 2){
+        currentView = 0;
+    }
+
+    const cards = document.getElementById("cards");
+
+    cards.classList.remove("compact");
+    cards.classList.remove("list");
+
+    if(currentView === 1){
+        cards.classList.add("compact");
+    }
+
+    if(currentView === 2){
+        cards.classList.add("list");
     }
 }
 
-/* СОЗДАНИЕ */
+function getImageHTML(ad){
 
-document.getElementById("sellForm").addEventListener("submit", e => {
+    if(ad.image){
+        return `<img src="${ad.image}">`;
+    }
+
+    return `
+        <div class="no-image">
+            Нет фото
+        </div>
+    `;
+}
+
+document.getElementById("sellForm")
+.addEventListener("submit", e => {
 
     e.preventDefault();
 
@@ -561,9 +712,11 @@ document.getElementById("sellForm").addEventListener("submit", e => {
 
             id: Date.now(),
 
+            owner: localStorage.getItem("telegramUsername") || "unknown",
+
             title: document.getElementById("title").value,
 
-            telegram: document.getElementById("telegram").value.replace("@", ""),
+            telegram: localStorage.getItem("telegramUsername") || "unknown",
 
             image: imageData,
 
@@ -575,7 +728,9 @@ document.getElementById("sellForm").addEventListener("submit", e => {
 
             features: document.getElementById("features").value,
 
-            price: parseFloat(document.getElementById("price").value)
+            price: parseFloat(
+                document.getElementById("price").value
+            )
         };
 
         ads.push(ad);
@@ -603,27 +758,24 @@ document.getElementById("sellForm").addEventListener("submit", e => {
     }
 });
 
-/* СОРТИРОВКА */
-
-document.getElementById("sortBtn").addEventListener("click", () => {
+document.getElementById("sortBtn")
+.addEventListener("click", () => {
 
     ascending = !ascending;
 
-    document.getElementById("sortBtn").textContent =
-        ascending
+    document.getElementById("sortBtn")
+        .textContent = ascending
         ? "Цена: дешевле"
         : "Цена: дороже";
 
     renderAds();
 });
 
-/* ФИЛЬТРЫ */
-
-document.getElementById("filterGeneration").addEventListener("change", renderAds);
-document.getElementById("filterRarity").addEventListener("change", renderAds);
-document.getElementById("filterBiome").addEventListener("change", renderAds);
-
-/* РЕНДЕР ОБЪЯВЛЕНИЙ */
+["filterGeneration","filterRarity","filterBiome"]
+.forEach(id => {
+    document.getElementById(id)
+        .addEventListener("change", renderAds);
+});
 
 function renderAds(){
 
@@ -649,10 +801,10 @@ function renderAds(){
         filtered = filtered.filter(ad => ad.biome == biome);
     }
 
-    filtered.sort((a,b) => ascending ? a.price - b.price : b.price - a.price);
+    filtered.sort((a,b) => ascending ? a.price-b.price : b.price-a.price);
 
-    document.getElementById("emptyText").style.display =
-        filtered.length ? "none" : "block";
+    document.getElementById("emptyText")
+        .style.display = filtered.length ? "none" : "block";
 
     filtered.forEach(ad => {
 
@@ -666,24 +818,26 @@ function renderAds(){
 
             <div class="card-content">
 
-                <div class="card-title">${ad.title}</div>
+                <div class="card-title">
+                    ${ad.title}
+                </div>
 
                 <div>${ad.rarity}</div>
 
                 <div>${ad.biome}</div>
 
-                <div class="price">${ad.price.toFixed(2)} TON</div>
+                <div class="price">
+                    ${ad.price.toFixed(2)} TON
+                </div>
 
             </div>
         `;
 
-        card.onclick = () => openModal(ad, false);
+        card.onclick = () => openModal(ad,false);
 
         cards.appendChild(card);
     });
 }
-
-/* МОИ ОБЪЯВЛЕНИЯ */
 
 function renderMyAds(){
 
@@ -691,10 +845,14 @@ function renderMyAds(){
 
     myCards.innerHTML = "";
 
-    document.getElementById("myEmpty").style.display =
-        ads.length ? "none" : "block";
+    const profile = localStorage.getItem("telegramUsername");
 
-    ads.forEach(ad => {
+    const myAds = ads.filter(ad => ad.owner === profile);
+
+    document.getElementById("myEmpty")
+        .style.display = myAds.length ? "none" : "block";
+
+    myAds.forEach(ad => {
 
         const card = document.createElement("div");
 
@@ -706,24 +864,27 @@ function renderMyAds(){
 
             <div class="card-content">
 
-                <div class="card-title">${ad.title}</div>
+                <div class="card-title">
+                    ${ad.title}
+                </div>
 
-                <div class="price">${ad.price.toFixed(2)} TON</div>
+                <div class="price">
+                    ${ad.price.toFixed(2)} TON
+                </div>
 
             </div>
         `;
 
-        card.onclick = () => openModal(ad, true);
+        card.onclick = () => openModal(ad,true);
 
         myCards.appendChild(card);
     });
 }
 
-/* МОДАЛКА */
+function openModal(ad,myAd){
 
-function openModal(ad, myAd){
-
-    document.getElementById("modal").style.display = "flex";
+    document.getElementById("modal")
+        .style.display = "flex";
 
     const modalImage = document.getElementById("modalImage");
 
@@ -737,22 +898,23 @@ function openModal(ad, myAd){
         modalImage.style.display = "none";
     }
 
-    document.getElementById("modalTitle").textContent = ad.title;
+    document.getElementById("modalTitle")
+        .textContent = ad.title;
 
-    document.getElementById("modalGeneration").innerHTML =
-        "<b>Поколение:</b> " + ad.generation;
+    document.getElementById("modalGeneration")
+        .innerHTML = "<b>Поколение:</b> " + ad.generation;
 
-    document.getElementById("modalRarity").innerHTML =
-        "<b>Редкость:</b> " + ad.rarity;
+    document.getElementById("modalRarity")
+        .innerHTML = "<b>Редкость:</b> " + ad.rarity;
 
-    document.getElementById("modalBiome").innerHTML =
-        "<b>Биом:</b> " + ad.biome;
+    document.getElementById("modalBiome")
+        .innerHTML = "<b>Биом:</b> " + ad.biome;
 
-    document.getElementById("modalFeatures").innerHTML =
-        "<b>Описание:</b> " + ad.features;
+    document.getElementById("modalFeatures")
+        .innerHTML = "<b>Описание:</b> " + ad.features;
 
-    document.getElementById("modalPrice").textContent =
-        ad.price.toFixed(2) + " TON";
+    document.getElementById("modalPrice")
+        .textContent = ad.price.toFixed(2) + " TON";
 
     const tg = document.getElementById("modalTelegram");
 
@@ -764,15 +926,17 @@ function openModal(ad, myAd){
 
         telegramLink = "https://t.me/" + ad.telegram;
 
-        const disabled = localStorage.getItem("disableTelegramWarning");
+        const disabled = localStorage
+            .getItem("disableTelegramWarning");
 
         if(disabled){
 
-            window.open(telegramLink, "_blank");
+            window.open(telegramLink,"_blank");
 
         }else{
 
-            document.getElementById("warningModal").style.display = "flex";
+            document.getElementById("warningModal")
+                .style.display = "flex";
         }
     };
 
@@ -804,29 +968,31 @@ function closeModal(){
     document.getElementById("modal").style.display = "none";
 }
 
-/* TELEGRAM ПРЕДУПРЕЖДЕНИЕ */
+document.getElementById("continueTelegram")
+.onclick = () => {
 
-document.getElementById("continueTelegram").onclick = () => {
-
-    window.open(telegramLink, "_blank");
+    window.open(telegramLink,"_blank");
 
     closeWarning();
 };
 
-document.getElementById("neverShowAgain").onclick = () => {
+document.getElementById("neverShowAgain")
+.onclick = () => {
 
-    localStorage.setItem("disableTelegramWarning", "true");
+    localStorage.setItem(
+        "disableTelegramWarning",
+        "true"
+    );
 
-    window.open(telegramLink, "_blank");
+    window.open(telegramLink,"_blank");
 
     closeWarning();
 };
 
 function closeWarning(){
-    document.getElementById("warningModal").style.display = "none";
+    document.getElementById("warningModal")
+        .style.display = "none";
 }
-
-/* СТАРТ */
 
 showSection("buy");
 
