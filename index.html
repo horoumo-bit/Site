@@ -3,67 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Gatto Market</title>
+
+<title>TON Market</title>
+
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
 font-family:Arial,sans-serif;
+-webkit-tap-highlight-color:transparent;
 }
 
 body{
 background:#111;
-color:#fff;
-min-height:100vh;
+color:white;
+padding-bottom:40px;
 overflow-x:hidden;
-padding-bottom:30px;
 }
 
 :root{
---bg:#111;
---card:#1d1d1d;
---card2:#262626;
 --green:#4caf50;
 --orange:#ff9800;
 --blue:#2196f3;
 --gray:#444;
-}
-
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(15px);
-}
-
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-@keyframes pulse{
-0%{transform:scale(1)}
-50%{transform:scale(1.03)}
-100%{transform:scale(1)}
+--card:#1d1d1d;
+--card2:#262626;
 }
 
 header{
 position:sticky;
 top:0;
 z-index:100;
-background:rgba(17,17,17,.96);
-backdrop-filter:blur(12px);
+background:#111;
 padding:12px;
 border-bottom:1px solid rgba(255,255,255,.05);
 }
 
 .top-row{
 display:flex;
-align-items:center;
 justify-content:center;
 gap:10px;
 position:relative;
@@ -71,10 +52,10 @@ position:relative;
 
 .top-btn{
 border:none;
-color:#fff;
+color:white;
 font-weight:700;
 cursor:pointer;
-transition:.18s;
+transition:.15s;
 }
 
 .top-btn:active{
@@ -84,7 +65,7 @@ transform:scale(.96);
 .buy-btn,
 .sell-btn{
 height:50px;
-padding:0 20px;
+padding:0 22px;
 border-radius:16px;
 font-size:16px;
 min-width:120px;
@@ -105,7 +86,7 @@ top:0;
 width:42px;
 height:42px;
 border-radius:12px;
-background:#000;
+background:black;
 font-size:18px;
 }
 
@@ -118,10 +99,9 @@ margin-top:12px;
 .my-btn{
 background:var(--blue);
 height:48px;
-padding:0 28px;
+padding:0 24px;
 border-radius:16px;
 font-size:16px;
-animation:pulse 3s infinite;
 }
 
 .container{
@@ -141,7 +121,6 @@ gap:12px;
 background:var(--card);
 padding:16px;
 border-radius:22px;
-animation:fade .25s ease;
 }
 
 input,
@@ -150,7 +129,7 @@ textarea{
 width:100%;
 border:none;
 background:var(--card2);
-color:#fff;
+color:white;
 padding:15px;
 font-size:16px;
 border-radius:14px;
@@ -165,25 +144,24 @@ height:90px;
 .submit-btn{
 border:none;
 background:#00aaff;
-color:#fff;
+color:white;
 height:54px;
 border-radius:16px;
 font-size:17px;
 font-weight:700;
-margin-top:4px;
 }
 
 .tools{
 display:flex;
 gap:8px;
-flex-wrap:wrap;
 margin-bottom:12px;
+flex-wrap:wrap;
 }
 
 .gray-btn{
 background:var(--gray);
-color:#fff;
 border:none;
+color:white;
 height:34px;
 padding:0 12px;
 border-radius:12px;
@@ -193,13 +171,12 @@ font-weight:700;
 
 .filters{
 display:none;
-grid-template-columns:1fr;
+flex-direction:column;
 gap:10px;
 background:var(--card);
 padding:14px;
 border-radius:18px;
 margin-bottom:14px;
-animation:fade .25s ease;
 }
 
 .cards{
@@ -214,11 +191,7 @@ grid-template-columns:repeat(2,1fr);
 }
 }
 
-.cards.compact{
-grid-template-columns:repeat(2,1fr);
-}
-
-.cards.compact .card img,
+.cards.compact img,
 .cards.compact .no-image{
 display:none;
 }
@@ -228,12 +201,7 @@ display:flex;
 flex-direction:column;
 }
 
-.cards.list .card{
-display:flex;
-align-items:center;
-}
-
-.cards.list .card img,
+.cards.list img,
 .cards.list .no-image{
 display:none;
 }
@@ -242,7 +210,6 @@ display:none;
 flex-direction:row;
 justify-content:space-between;
 align-items:center;
-width:100%;
 }
 
 .card{
@@ -250,27 +217,20 @@ background:var(--card);
 border-radius:22px;
 overflow:hidden;
 cursor:pointer;
-transition:.2s;
-animation:fade .25s ease;
-}
-
-.card:active{
-transform:scale(.98);
 }
 
 .card img{
 width:100%;
 height:220px;
 object-fit:cover;
-background:#222;
+display:block;
 }
 
 .no-image{
-width:100%;
 height:180px;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
 background:#2a2a2a;
 color:#777;
 }
@@ -297,8 +257,8 @@ color:var(--green);
 .empty{
 text-align:center;
 margin-top:60px;
-opacity:.8;
 font-size:22px;
+opacity:.8;
 }
 
 .modal,
@@ -307,20 +267,16 @@ position:fixed;
 inset:0;
 background:rgba(0,0,0,.82);
 display:none;
-justify-content:center;
-align-items:flex-end;
+justify-content:flex-end;
+flex-direction:column;
 z-index:999;
-padding:0;
 }
 
 .modal-content,
 .profile-box{
-width:100%;
-max-width:700px;
 background:var(--card);
 border-radius:24px 24px 0 0;
 padding:18px;
-animation:fade .2s ease;
 max-height:90vh;
 overflow:auto;
 }
@@ -344,7 +300,7 @@ margin-top:14px;
 height:52px;
 border:none;
 border-radius:16px;
-color:#fff;
+color:white;
 font-size:16px;
 font-weight:700;
 margin-top:8px;
@@ -358,57 +314,39 @@ background:#444;
 background:#ff3b3b;
 }
 
-.profile-title{
-font-size:26px;
-font-weight:700;
-margin-bottom:14px;
-}
-
-.profile-info{
-display:flex;
-flex-direction:column;
-gap:10px;
-font-size:17px;
-}
-
-.create-empty-btn{
-margin-top:20px;
-background:var(--orange);
-color:#fff;
-border:none;
-height:52px;
-padding:0 20px;
-border-radius:16px;
-font-size:16px;
-font-weight:700;
-}
-
 </style>
 </head>
+
 <body>
 
 <header>
 
 <div class="top-row">
 
-<button class="top-btn buy-btn" onclick="showSection('buy')">
+<button class="top-btn buy-btn"
+onclick="showSection('buy')">
 Купить
 </button>
 
-<button class="top-btn sell-btn" onclick="showSection('sell')">
+<button class="top-btn sell-btn"
+onclick="showSection('sell')">
 Продать
 </button>
 
-<button class="top-btn profile-btn" onclick="openProfile()">
+<button class="top-btn profile-btn"
+onclick="openProfile()">
 👤
 </button>
 
 </div>
 
 <div class="my-row">
-<button class="top-btn my-btn" onclick="showSection('my')">
+
+<button class="top-btn my-btn"
+onclick="showSection('my')">
 Мои объявления
 </button>
+
 </div>
 
 </header>
@@ -419,25 +357,48 @@ font-weight:700;
 
 <form id="sellForm">
 
-<input type="text" id="title" placeholder="Название" required>
+<input type="text"
+id="title"
+placeholder="Название"
+required>
 
-<input type="file" id="image" accept="image/*">
+<input type="file"
+id="image"
+accept="image/*">
 
 <select id="generation" required>
+
 <option value="">Поколение</option>
+
+<option value="1 поколение">1 поколение</option>
+<option value="2 поколение">2 поколение</option>
+<option value="3 поколение">3 поколение</option>
+<option value="4 поколение">4 поколение</option>
+<option value="5 поколение">5 поколение</option>
+<option value="6 поколение">6 поколение</option>
+<option value="7 поколение">7 поколение</option>
+<option value="8 поколение">8 поколение</option>
+<option value="9 поколение">9 поколение</option>
+<option value="10 поколение">10 поколение</option>
+
 </select>
 
 <select id="rarity" required>
+
 <option value="">Редкость</option>
+
 <option>Обычный</option>
 <option>Редкий</option>
 <option>Мифический</option>
 <option>Легендарный</option>
 <option>Мутант</option>
+
 </select>
 
 <select id="biome" required>
+
 <option value="">Биом</option>
+
 <option>Луг</option>
 <option>Лес</option>
 <option>Пустыня</option>
@@ -446,13 +407,26 @@ font-weight:700;
 <option>Грядки</option>
 <option>Лёд</option>
 <option>Эхо</option>
+
 </select>
 
-<textarea id="features" maxlength="150" placeholder="Описание до 150 символов"></textarea>
+<textarea
+id="features"
+maxlength="150"
+placeholder="Описание">
+</textarea>
 
-<input type="number" id="price" step="0.01" min="0.01" placeholder="Цена TON" required>
+<input
+type="number"
+id="price"
+step="0.01"
+min="0.01"
+placeholder="Цена TON"
+required>
 
-<button class="submit-btn" type="submit">
+<button
+class="submit-btn"
+type="submit">
 Создать объявление
 </button>
 
@@ -464,15 +438,21 @@ font-weight:700;
 
 <div class="tools">
 
-<button class="gray-btn" onclick="toggleFilters()">
+<button
+class="gray-btn"
+onclick="toggleFilters()">
 Фильтры
 </button>
 
-<button class="gray-btn" id="sortBtn">
+<button
+class="gray-btn"
+id="sortBtn">
 Цена ↓
 </button>
 
-<button class="gray-btn" onclick="changeViewMode()">
+<button
+class="gray-btn"
+onclick="changeViewMode()">
 Вид
 </button>
 
@@ -481,20 +461,38 @@ font-weight:700;
 <div class="filters" id="filters">
 
 <select id="filterGeneration">
+
 <option value="">Все поколения</option>
+
+<option value="1 поколение">1 поколение</option>
+<option value="2 поколение">2 поколение</option>
+<option value="3 поколение">3 поколение</option>
+<option value="4 поколение">4 поколение</option>
+<option value="5 поколение">5 поколение</option>
+<option value="6 поколение">6 поколение</option>
+<option value="7 поколение">7 поколение</option>
+<option value="8 поколение">8 поколение</option>
+<option value="9 поколение">9 поколение</option>
+<option value="10 поколение">10 поколение</option>
+
 </select>
 
 <select id="filterRarity">
+
 <option value="">Любая редкость</option>
+
 <option>Обычный</option>
 <option>Редкий</option>
 <option>Мифический</option>
 <option>Легендарный</option>
 <option>Мутант</option>
+
 </select>
 
 <select id="filterBiome">
+
 <option value="">Любой биом</option>
+
 <option>Луг</option>
 <option>Лес</option>
 <option>Пустыня</option>
@@ -503,6 +501,7 @@ font-weight:700;
 <option>Грядки</option>
 <option>Лёд</option>
 <option>Эхо</option>
+
 </select>
 
 </div>
@@ -520,11 +519,7 @@ font-weight:700;
 <div class="cards" id="myCards"></div>
 
 <div class="empty hidden" id="myEmpty">
-У вас пока нет объявлений
-<br>
-<button class="create-empty-btn" onclick="showSection('sell')">
-Создать объявление
-</button>
+У вас нет объявлений
 </div>
 
 </section>
@@ -532,16 +527,22 @@ font-weight:700;
 </div>
 
 <div class="profile-modal" id="profileModal">
+
 <div class="profile-box">
-<div class="profile-title">Профиль</div>
-<div class="profile-info">
+
+<h2>Профиль</h2>
+
 <div id="profileName"></div>
 <div id="profileUsername"></div>
-</div>
-<button class="close-btn" onclick="closeProfile()">
+
+<button
+class="close-btn"
+onclick="closeProfile()">
 Закрыть
 </button>
+
 </div>
+
 </div>
 
 <script>
@@ -552,202 +553,355 @@ tg.expand();
 
 const user = tg.initDataUnsafe.user || {};
 
-const username = user.username || 'unknown';
-const firstName = user.first_name || 'Пользователь';
+const username = user.username || "unknown";
 
-localStorage.setItem('telegramUsername', username);
-localStorage.setItem('telegramName', firstName);
+const firstName = user.first_name || "Пользователь";
 
-const profileName = document.getElementById('profileName');
-const profileUsername = document.getElementById('profileUsername');
+document.getElementById("profileName").innerText =
+"Имя: " + firstName;
 
-profileName.textContent = 'Имя: ' + firstName;
-profileUsername.textContent = '@' + username;
+document.getElementById("profileUsername").innerText =
+"@" + username;
 
-const generationIds = ['generation','filterGeneration'];
+let ads =
+JSON.parse(localStorage.getItem("ads")) || [];
 
-generationIds.forEach(id=>{
-const select = document.getElementById(id);
-for(let i=1;i<=10;i++){
-const option = document.createElement('option');
-option.value = i;
-option.textContent = 'Поколение ' + i;
-select.appendChild(option);
-}
-});
-
-let ads = JSON.parse(localStorage.getItem('ads')) || [];
 let ascending = true;
+
 let currentView = 0;
 
 function saveAds(){
-localStorage.setItem('ads', JSON.stringify(ads));
+
+localStorage.setItem(
+"ads",
+JSON.stringify(ads)
+);
+
 }
 
-function showSection(type){
+function showSection(section){
 
-['sellSection','buySection','mySection'].forEach(id=>{
-document.getElementById(id).classList.add('hidden');
-});
+document.getElementById(
+"sellSection"
+).classList.add("hidden");
 
-if(type === 'sell'){
-document.getElementById('sellSection').classList.remove('hidden');
+document.getElementById(
+"buySection"
+).classList.add("hidden");
+
+document.getElementById(
+"mySection"
+).classList.add("hidden");
+
+if(section==="sell"){
+
+document.getElementById(
+"sellSection"
+).classList.remove("hidden");
+
 }
 
-if(type === 'buy'){
-document.getElementById('buySection').classList.remove('hidden');
+if(section==="buy"){
+
+document.getElementById(
+"buySection"
+).classList.remove("hidden");
+
 renderAds();
+
 }
 
-if(type === 'my'){
-document.getElementById('mySection').classList.remove('hidden');
+if(section==="my"){
+
+document.getElementById(
+"mySection"
+).classList.remove("hidden");
+
 renderMyAds();
+
 }
 
-window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function toggleFilters(){
-const filters = document.getElementById('filters');
-filters.style.display = filters.style.display === 'grid' ? 'none' : 'grid';
+
+const filters =
+document.getElementById("filters");
+
+if(filters.style.display==="flex"){
+
+filters.style.display="none";
+
+}else{
+
+filters.style.display="flex";
+
+}
+
 }
 
 function changeViewMode(){
 
-const cards = document.getElementById('cards');
+const cards =
+document.getElementById("cards");
 
 currentView++;
 
-if(currentView > 2){
-currentView = 0;
+if(currentView>2){
+currentView=0;
 }
 
-cards.classList.remove('compact');
-cards.classList.remove('list');
+cards.classList.remove("compact");
+cards.classList.remove("list");
 
-if(currentView === 1){
-cards.classList.add('compact');
+if(currentView===1){
+
+cards.classList.add("compact");
+
 }
 
-if(currentView === 2){
-cards.classList.add('list');
+if(currentView===2){
+
+cards.classList.add("list");
+
 }
 
 }
 
 function openProfile(){
-document.getElementById('profileModal').style.display = 'flex';
+
+document.getElementById(
+"profileModal"
+).style.display="flex";
+
 }
 
 function closeProfile(){
-document.getElementById('profileModal').style.display = 'none';
+
+document.getElementById(
+"profileModal"
+).style.display="none";
+
 }
 
-function getImageHTML(ad){
+function getImage(ad){
+
 if(ad.image){
+
 return `<img src="${ad.image}">`;
-}
-return `<div class="no-image">Нет фото</div>`;
+
 }
 
-function openAd(ad, isMy = false){
+return `
+<div class="no-image">
+Нет фото
+</div>
+`;
 
-const modal = document.createElement('div');
-modal.className = 'modal';
-modal.style.display = 'flex';
+}
+
+function openAd(ad,my=false){
+
+const modal =
+document.createElement("div");
+
+modal.className="modal";
+
+modal.style.display="flex";
 
 modal.innerHTML = `
+
 <div class="modal-content">
 
-${getImageHTML(ad)}
+${getImage(ad)}
 
 <div class="modal-body">
 
-<div class="card-title">${ad.title}</div>
+<div class="card-title">
+${ad.title}
+</div>
 
-<div><b>Поколение:</b> ${ad.generation}</div>
-<div><b>Редкость:</b> ${ad.rarity}</div>
-<div><b>Биом:</b> ${ad.biome}</div>
-<div><b>Описание:</b> ${ad.features || 'Нет описания'}</div>
-<div><b>Продавец:</b> @${ad.owner}</div>
+<div>
+Поколение:
+${ad.generation}
+</div>
 
-<div class="price">${ad.price.toFixed(2)} TON</div>
+<div>
+Редкость:
+${ad.rarity}
+</div>
 
-${isMy ? `
-<button class="remove-btn" onclick="removeAd(${ad.id}); this.closest('.modal').remove()">
+<div>
+Биом:
+${ad.biome}
+</div>
+
+<div>
+Описание:
+${ad.features || "Нет"}
+</div>
+
+<div>
+Продавец:
+@${ad.owner}
+</div>
+
+<div class="price">
+${ad.price.toFixed(2)} TON
+</div>
+
+${my ? `
+<button
+class="remove-btn"
+onclick="removeAd(${ad.id})">
 Снять с продажи
 </button>
-` : ''}
+` : ""}
 
-<button class="close-btn" onclick="this.closest('.modal').remove()">
+<button
+class="close-btn"
+onclick="this.closest('.modal').remove()">
 Закрыть
 </button>
 
 </div>
+
 </div>
+
 `;
 
 document.body.appendChild(modal);
 
-modal.addEventListener('click',e=>{
-if(e.target === modal){
+modal.onclick = e=>{
+
+if(e.target===modal){
+
 modal.remove();
+
 }
-});
+
+};
 
 }
 
 function removeAd(id){
-ads = ads.filter(ad=>ad.id !== id);
+
+ads = ads.filter(
+ad=>ad.id!==id
+);
+
 saveAds();
+
 renderAds();
+
 renderMyAds();
+
+document
+.querySelectorAll(".modal")
+.forEach(m=>m.remove());
+
 }
 
 function renderAds(){
 
-const cards = document.getElementById('cards');
-cards.innerHTML = '';
+const cards =
+document.getElementById("cards");
 
-let filtered = [...ads];
+cards.innerHTML="";
 
-const generation = document.getElementById('filterGeneration').value;
-const rarity = document.getElementById('filterRarity').value;
-const biome = document.getElementById('filterBiome').value;
+let filtered=[...ads];
+
+const generation =
+document.getElementById(
+"filterGeneration"
+).value;
+
+const rarity =
+document.getElementById(
+"filterRarity"
+).value;
+
+const biome =
+document.getElementById(
+"filterBiome"
+).value;
 
 if(generation){
-filtered = filtered.filter(ad => ad.generation == generation);
+
+filtered = filtered.filter(
+ad=>ad.generation===generation
+);
+
 }
 
 if(rarity){
-filtered = filtered.filter(ad => ad.rarity === rarity);
+
+filtered = filtered.filter(
+ad=>ad.rarity===rarity
+);
+
 }
 
 if(biome){
-filtered = filtered.filter(ad => ad.biome === biome);
+
+filtered = filtered.filter(
+ad=>ad.biome===biome
+);
+
 }
 
-filtered.sort((a,b)=> ascending ? a.price - b.price : b.price - a.price);
+filtered.sort((a,b)=>
 
-const empty = document.getElementById('emptyText');
-empty.classList.toggle('hidden', filtered.length !== 0);
+ascending
+? a.price-b.price
+: b.price-a.price
+
+);
+
+document.getElementById(
+"emptyText"
+).classList.toggle(
+"hidden",
+filtered.length!==0
+);
 
 filtered.forEach(ad=>{
 
-const card = document.createElement('div');
-card.className = 'card';
+const card =
+document.createElement("div");
+
+card.className="card";
 
 card.innerHTML = `
-${getImageHTML(ad)}
+
+${getImage(ad)}
+
 <div class="card-content">
-<div class="card-title">${ad.title}</div>
-<div>${ad.rarity}</div>
-<div>${ad.biome}</div>
-<div class="price">${ad.price.toFixed(2)} TON</div>
+
+<div class="card-title">
+${ad.title}
 </div>
+
+<div>
+${ad.rarity}
+</div>
+
+<div>
+${ad.biome}
+</div>
+
+<div class="price">
+${ad.price.toFixed(2)} TON
+</div>
+
+</div>
+
 `;
 
-card.onclick = ()=> openAd(ad);
+card.addEventListener(
+"click",
+()=>openAd(ad)
+);
 
 cards.appendChild(card);
 
@@ -757,28 +911,52 @@ cards.appendChild(card);
 
 function renderMyAds(){
 
-const myCards = document.getElementById('myCards');
-myCards.innerHTML = '';
+const myCards =
+document.getElementById("myCards");
 
-const myAds = ads.filter(ad => ad.owner === username);
+myCards.innerHTML="";
 
-const empty = document.getElementById('myEmpty');
-empty.classList.toggle('hidden', myAds.length !== 0);
+const myAds =
+ads.filter(
+ad=>ad.owner===username
+);
+
+document.getElementById(
+"myEmpty"
+).classList.toggle(
+"hidden",
+myAds.length!==0
+);
 
 myAds.forEach(ad=>{
 
-const card = document.createElement('div');
-card.className = 'card';
+const card =
+document.createElement("div");
+
+card.className="card";
 
 card.innerHTML = `
-${getImageHTML(ad)}
+
+${getImage(ad)}
+
 <div class="card-content">
-<div class="card-title">${ad.title}</div>
-<div class="price">${ad.price.toFixed(2)} TON</div>
+
+<div class="card-title">
+${ad.title}
 </div>
+
+<div class="price">
+${ad.price.toFixed(2)} TON
+</div>
+
+</div>
+
 `;
 
-card.onclick = ()=> openAd(ad, true);
+card.addEventListener(
+"click",
+()=>openAd(ad,true)
+);
 
 myCards.appendChild(card);
 
@@ -786,64 +964,142 @@ myCards.appendChild(card);
 
 }
 
-['filterGeneration','filterRarity','filterBiome'].forEach(id=>{
-document.getElementById(id).addEventListener('change', renderAds);
-});
+document.getElementById(
+"filterGeneration"
+).addEventListener(
+"change",
+renderAds
+);
 
-const sortBtn = document.getElementById('sortBtn');
+document.getElementById(
+"filterRarity"
+).addEventListener(
+"change",
+renderAds
+);
 
-sortBtn.addEventListener('click',()=>{
-ascending = !ascending;
-sortBtn.textContent = ascending ? 'Цена ↓' : 'Цена ↑';
+document.getElementById(
+"filterBiome"
+).addEventListener(
+"change",
+renderAds
+);
+
+document.getElementById(
+"sortBtn"
+).onclick = ()=>{
+
+ascending=!ascending;
+
+document.getElementById(
+"sortBtn"
+).textContent =
+ascending
+? "Цена ↓"
+: "Цена ↑";
+
 renderAds();
-});
 
-const sellForm = document.getElementById('sellForm');
+};
 
-sellForm.addEventListener('submit',e=>{
+document.getElementById(
+"sellForm"
+).addEventListener(
+"submit",
+e=>{
 
 e.preventDefault();
 
-const file = document.getElementById('image').files[0];
+const file =
+document.getElementById(
+"image"
+).files[0];
 
-const createAd = (imageData = null)=>{
+const createAd = (
+imageData=null
+)=>{
 
 const ad = {
-id: Date.now(),
-owner: username,
-title: document.getElementById('title').value,
-image: imageData,
-generation: document.getElementById('generation').value,
-rarity: document.getElementById('rarity').value,
-biome: document.getElementById('biome').value,
-features: document.getElementById('features').value,
-price: parseFloat(document.getElementById('price').value)
+
+id:Date.now(),
+
+owner:username,
+
+title:
+document.getElementById(
+"title"
+).value,
+
+image:imageData,
+
+generation:
+document.getElementById(
+"generation"
+).value,
+
+rarity:
+document.getElementById(
+"rarity"
+).value,
+
+biome:
+document.getElementById(
+"biome"
+).value,
+
+features:
+document.getElementById(
+"features"
+).value,
+
+price:parseFloat(
+document.getElementById(
+"price"
+).value
+)
+
 };
 
 ads.unshift(ad);
 
 saveAds();
+
 renderAds();
+
 renderMyAds();
 
-sellForm.reset();
+document.getElementById(
+"sellForm"
+).reset();
 
-showSection('buy');
+showSection("buy");
 
 };
 
 if(file){
-const reader = new FileReader();
-reader.onload = ()=> createAd(reader.result);
+
+const reader =
+new FileReader();
+
+reader.onload = ()=>{
+
+createAd(reader.result);
+
+};
+
 reader.readAsDataURL(file);
+
 }else{
+
 createAd();
+
 }
 
 });
 
-showSection('buy');
+showSection("buy");
 
 </script>
+
 </body>
 </html>
