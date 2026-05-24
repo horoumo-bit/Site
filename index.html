@@ -1,538 +1,535 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Gatto Shop</title>
-
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<style>
-body{
-    background:#020202;
-    color:white;
-    font-family:Inter,sans-serif;
-    overflow-x:hidden;
-}
-
-.dark-box{
-    background:linear-gradient(180deg,#070707,#030303);
-    border:1px solid rgba(255,255,255,.04);
-}
-
-.input-dark{
-    background:#050505;
-    border:1px solid rgba(255,255,255,.05);
-}
-
-.input-dark:focus{
-    outline:none;
-    border-color:#1f2937;
-}
-
-.modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.75);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:100;
-    padding:16px;
-}
-
-.hidden{
-    display:none;
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TON Market</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
+<body class="bg-zinc-950 text-white min-h-screen overflow-x-hidden">
+  <div class="max-w-7xl mx-auto p-3 sm:p-4 pb-10 overflow-x-hidden">
 
-<body>
+    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-6">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-full bg-zinc-800 overflow-hidden border border-zinc-700">
+          <img id="profilePhoto" class="w-full h-full object-cover hidden" />
+          <div id="profilePlaceholder" class="w-full h-full flex items-center justify-center text-xl">👤</div>
+        </div>
 
-<div class="max-w-7xl mx-auto p-3">
+        <div>
+          <div id="profileName" class="font-bold text-lg">Telegram Profile</div>
+          <div id="profileUsername" class="text-zinc-400 text-sm">@username</div>
+        </div>
+      </div>
 
-    <!-- PROFILE -->
-    <div class="dark-box rounded-xl p-5 flex items-center justify-between">
+      <div class="flex flex-wrap gap-2 w-full lg:w-auto">
+        <button onclick="openSellModal()" class="flex-1 lg:flex-none min-w-[120px] bg-emerald-500 hover:bg-emerald-600 transition px-5 py-3 rounded-2xl font-semibold">
+          Продать
+        </button>
 
-        <div class="flex items-center gap-4">
+        <button onclick="showTab('buy')" class="flex-1 lg:flex-none min-w-[120px] bg-blue-500 hover:bg-blue-600 transition px-5 py-3 rounded-2xl font-semibold">
+          Купить
+        </button>
 
-            <div class="w-16 h-16 rounded-full border border-zinc-700 bg-zinc-900 flex items-center justify-center overflow-hidden">
-                <img id="profilePhoto"
-                     class="w-full h-full object-cover hidden">
+        <button onclick="showTab('my')" class="flex-1 lg:flex-none min-w-[120px] bg-zinc-800 hover:bg-zinc-700 transition px-5 py-3 rounded-2xl font-semibold border border-zinc-700">
+          Мои объявления
+        </button>
+      </div>
+    </div>
 
-                <svg id="profileIcon"
-                     xmlns="http://www.w3.org/2000/svg"
-                     class="w-8 h-8 text-zinc-400"
-                     fill="none"
-                     viewBox="0 0 24 24"
-                     stroke="currentColor">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4 mb-5">
+      <div class="flex items-center justify-between cursor-pointer" onclick="toggleFilters()">
+        <div class="flex items-center gap-3 flex-wrap">
+          <h2 class="text-xl font-bold">Поиск и фильтры</h2>
 
-                    <path stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="1.5"
-                          d="M15.75 6.75a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zm-9 13.5a5.25 5.25 0 0110.5 0"/>
-                </svg>
-            </div>
+          <button onclick="event.stopPropagation(); changeView()" class="bg-zinc-800 hover:bg-zinc-700 px-4 py-2 rounded-xl text-sm border border-zinc-700">
+            Вид: <span id="viewModeText">Обычный</span>
+          </button>
+        </div>
 
+        <div id="filterArrow" class="text-2xl transition">⬇</div>
+      </div>
+
+      <div id="filtersBlock" class="mt-5 hidden">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+          <input id="searchInput" type="text" placeholder="Поиск по названию..." class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 outline-none" />
+
+          <select id="generationFilter" class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3">
+            <option value="">Поколение</option>
+          </select>
+
+          <select id="rarityFilter" class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3">
+            <option value="">Редкость</option>
+            <option>Обычный</option>
+            <option>Редкий</option>
+            <option>Мифический</option>
+            <option>Легендарный</option>
+            <option>Мутант</option>
+          </select>
+
+          <select id="biomeFilter" class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3">
+            <option value="">Биом</option>
+            <option>Луг</option>
+            <option>Лес</option>
+            <option>Пустыня</option>
+            <option>Горы</option>
+            <option>Море</option>
+            <option>Грядки</option>
+            <option>Лёд</option>
+            <option>Эхо</option>
+          </select>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 mt-4">
+          <button id="sortButton" onclick="toggleSort()" class="bg-purple-600 hover:bg-purple-700 rounded-xl px-3 py-2 text-sm font-semibold">
+            Цена ↑
+          </button>
+
+          <input id="minPriceFilter" type="number" min="0" placeholder="Мин" class="w-24 bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm outline-none" />
+
+          <input id="maxPriceFilter" type="number" min="0" placeholder="Макс" class="w-24 bg-zinc-800 border border-zinc-700 rounded-xl px-3 py-2 text-sm outline-none" />
+        </div>
+      </div>
+    </div>
+
+    <div id="marketContainer"></div>
+  </div>
+
+  <div id="sellModal" class="fixed inset-0 bg-black/70 hidden items-start justify-center z-50 p-3 overflow-y-auto overscroll-contain">
+    <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4 sm:p-6 w-full max-w-2xl my-4 sm:my-10">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold">Создать объявление</h2>
+
+        <button onclick="closeSellModal()" class="text-2xl">✕</button>
+      </div>
+
+      <div class="grid gap-4">
+        <input id="itemTitle" maxlength="50" type="text" placeholder="Название" class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 outline-none" />
+
+        <input id="telegramUsername" maxlength="40" type="text" placeholder="Username Telegram (@example)" class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 outline-none" />
+
+        <input id="imageInput" type="file" accept="image/*" class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3" />
+
+        <select id="generationInput" class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3">
+          <option value="">Выберите поколение</option>
+        </select>
+
+        <select id="rarityInput" class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3">
+          <option value="">Редкость</option>
+          <option>Обычный</option>
+          <option>Редкий</option>
+          <option>Мифический</option>
+          <option>Легендарный</option>
+          <option>Мутант</option>
+        </select>
+
+        <select id="biomeInput" class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3">
+          <option value="">Биом</option>
+          <option>Луг</option>
+          <option>Лес</option>
+          <option>Пустыня</option>
+          <option>Горы</option>
+          <option>Море</option>
+          <option>Грядки</option>
+          <option>Лёд</option>
+          <option>Эхо</option>
+        </select>
+
+        <textarea id="descriptionInput" maxlength="150" placeholder="Особенности (до 150 символов)" class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 h-28 resize-none outline-none"></textarea>
+
+        <input id="priceInput" step="0.01" min="0" type="number" placeholder="Цена Ton" class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 outline-none" />
+
+        <button onclick="createListing()" class="bg-emerald-500 hover:bg-emerald-600 transition py-4 rounded-2xl font-bold text-lg">
+          Выставить на продажу
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="detailsModal" class="fixed inset-0 bg-black/80 hidden items-start justify-center z-50 p-3 overflow-y-auto overscroll-contain">
+    <div id="detailsContent" class="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-3xl overflow-hidden my-4"></div>
+  </div>
+
+  <script>
+    const marketContainer = document.getElementById('marketContainer');
+    const detailsModal = document.getElementById('detailsModal');
+    const detailsContent = document.getElementById('detailsContent');
+
+    let currentTab = 'buy';
+    let sortAscending = true;
+    let filtersOpen = false;
+    let currentView = 1;
+
+    const viewNames = {
+      1: 'Обычный',
+      2: 'Квадратики',
+      3: 'Линия'
+    };
+
+    const tg = window.Telegram?.WebApp;
+
+    let telegramUser = {
+      first_name: 'Пользователь',
+      username: 'telegram',
+      photo_url: ''
+    };
+
+    if (tg) {
+      tg.expand();
+      tg.ready();
+
+      if (tg.initDataUnsafe?.user) {
+        telegramUser = tg.initDataUnsafe.user;
+      }
+    }
+
+    document.getElementById('profileName').innerText = telegramUser.first_name || 'Пользователь';
+    document.getElementById('profileUsername').innerText = telegramUser.username ? '@' + telegramUser.username : '@telegram';
+
+    if (telegramUser.photo_url) {
+      const img = document.getElementById('profilePhoto');
+      img.src = telegramUser.photo_url;
+      img.classList.remove('hidden');
+      document.getElementById('profilePlaceholder').classList.add('hidden');
+    }
+
+    const generationSelects = [
+      document.getElementById('generationInput'),
+      document.getElementById('generationFilter')
+    ];
+
+    for (let i = 1; i <= 10; i++) {
+      generationSelects.forEach(select => {
+        const option = document.createElement('option');
+        option.value = i;
+        option.innerText = i + ' поколение';
+        select.appendChild(option.cloneNode(true));
+      });
+    }
+
+    let listings = JSON.parse(localStorage.getItem('ton_market_listings') || '[]');
+
+    function saveListings() {
+      localStorage.setItem('ton_market_listings', JSON.stringify(listings));
+    }
+
+    function openSellModal() {
+      document.getElementById('sellModal').classList.remove('hidden');
+      document.getElementById('sellModal').classList.add('flex');
+    }
+
+    function closeSellModal() {
+      document.getElementById('sellModal').classList.add('hidden');
+      document.getElementById('sellModal').classList.remove('flex');
+    }
+
+    function toggleFilters() {
+      filtersOpen = !filtersOpen;
+
+      const block = document.getElementById('filtersBlock');
+      const arrow = document.getElementById('filterArrow');
+
+      if (filtersOpen) {
+        block.classList.remove('hidden');
+        arrow.innerText = '⬆';
+      } else {
+        block.classList.add('hidden');
+        arrow.innerText = '⬇';
+      }
+    }
+
+    function changeView() {
+      currentView++;
+
+      if (currentView > 3) currentView = 1;
+
+      document.getElementById('viewModeText').innerText = viewNames[currentView];
+      renderListings();
+    }
+
+    function createListing() {
+      const title = document.getElementById('itemTitle').value.trim();
+      const username = document.getElementById('telegramUsername').value.trim();
+      const generation = document.getElementById('generationInput').value;
+      const rarity = document.getElementById('rarityInput').value;
+      const biome = document.getElementById('biomeInput').value;
+      const description = document.getElementById('descriptionInput').value.trim();
+      const price = parseFloat(document.getElementById('priceInput').value);
+      const imageFile = document.getElementById('imageInput').files[0];
+
+      if (!title || !username || !generation || !rarity || !biome || !description || isNaN(price)) {
+        alert('Заполните все обязательные поля');
+        return;
+      }
+
+      const listing = {
+        id: Date.now(),
+        owner: telegramUser.username || username,
+        ownerName: telegramUser.first_name || 'Пользователь',
+        title,
+        username,
+        generation,
+        rarity,
+        biome,
+        description,
+        price: Number(price.toFixed(2)),
+        image: '',
+        createdAt: new Date().toISOString()
+      };
+
+      if (imageFile) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          listing.image = e.target.result;
+          listings.unshift(listing);
+          saveListings();
+          renderListings();
+          closeSellModal();
+          clearForm();
+        };
+
+        reader.readAsDataURL(imageFile);
+      } else {
+        listings.unshift(listing);
+        saveListings();
+        renderListings();
+        closeSellModal();
+        clearForm();
+      }
+    }
+
+    function clearForm() {
+      document.getElementById('itemTitle').value = '';
+      document.getElementById('telegramUsername').value = telegramUser.username ? '@' + telegramUser.username : '';
+      document.getElementById('generationInput').value = '';
+      document.getElementById('rarityInput').value = '';
+      document.getElementById('biomeInput').value = '';
+      document.getElementById('descriptionInput').value = '';
+      document.getElementById('priceInput').value = '';
+      document.getElementById('imageInput').value = '';
+    }
+
+    function toggleSort() {
+      sortAscending = !sortAscending;
+
+      document.getElementById('sortButton').innerText = sortAscending
+        ? 'Цена ↑'
+        : 'Цена ↓';
+
+      renderListings();
+    }
+
+    function showTab(tab) {
+      currentTab = tab;
+      renderListings();
+    }
+
+    function removeListing(id) {
+      if (!confirm('Снять объявление с продажи?')) return;
+
+      listings = listings.filter(item => item.id !== id);
+      saveListings();
+      renderListings();
+      closeDetails();
+    }
+
+    function openDetails(id) {
+      const item = listings.find(x => x.id === id);
+      if (!item) return;
+
+      detailsModal.classList.remove('hidden');
+      detailsModal.classList.add('flex');
+
+      detailsContent.innerHTML = `
+        <div class="relative">
+          ${item.image
+            ? `<img src="${item.image}" class="w-full h-80 object-cover" />`
+            : `<div class="w-full h-80 bg-zinc-800 flex items-center justify-center text-7xl">📦</div>`}
+
+          <button onclick="closeDetails()" class="absolute top-4 right-4 bg-black/50 hover:bg-black/70 w-12 h-12 rounded-full text-2xl">
+            ✕
+          </button>
+        </div>
+
+        <div class="p-6 space-y-4">
+          <div class="flex flex-wrap items-start justify-between gap-4">
             <div>
-                <div id="profileName" class="text-3xl font-bold">
-                    Пользователь
-                </div>
-
-                <div id="profileUsername" class="text-blue-400 text-lg">
-                    @telegram
-                </div>
+              <h2 class="text-3xl font-bold">${item.title}</h2>
+              <div class="text-zinc-400 mt-1">Продавец: ${item.ownerName}</div>
             </div>
 
+            <div class="bg-emerald-500 text-black px-5 py-3 rounded-2xl font-black text-2xl">
+              ${item.price} TON
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-3">
+            <div class="bg-zinc-800 rounded-2xl p-4">
+              <div class="text-zinc-400 text-sm">Поколение</div>
+              <div class="font-bold text-lg">${item.generation}</div>
+            </div>
+
+            <div class="bg-zinc-800 rounded-2xl p-4">
+              <div class="text-zinc-400 text-sm">Редкость</div>
+              <div class="font-bold text-lg">${item.rarity}</div>
+            </div>
+
+            <div class="bg-zinc-800 rounded-2xl p-4">
+              <div class="text-zinc-400 text-sm">Биом</div>
+              <div class="font-bold text-lg">${item.biome}</div>
+            </div>
+
+            <div class="bg-zinc-800 rounded-2xl p-4">
+              <div class="text-zinc-400 text-sm">Telegram</div>
+              <div class="font-bold text-lg">${item.username}</div>
+            </div>
+          </div>
+
+          <div class="bg-zinc-800 rounded-2xl p-5">
+            <div class="text-zinc-400 text-sm mb-2">Описание</div>
+            <div>${item.description}</div>
+          </div>
+
+          <div class="flex flex-wrap gap-3 pt-2">
+            <a href="https://t.me/${item.username.replace('@', '')}" target="_blank" class="bg-blue-500 hover:bg-blue-600 transition px-5 py-3 rounded-2xl font-bold">
+              Написать в Telegram
+            </a>
+
+            ${item.owner === telegramUser.username
+              ? `<button onclick="removeListing(${item.id})" class="bg-red-500 hover:bg-red-600 transition px-5 py-3 rounded-2xl font-bold">
+                  Снять с продажи
+                </button>`
+              : ''}
+          </div>
         </div>
-
-    </div>
-
-    <!-- TOP BUTTONS -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-4">
-
-        <button id="sellBtn"
-                class="bg-[#0a0a0a] border border-zinc-800 rounded-xl h-16 text-xl font-semibold hover:bg-[#111] transition">
-            Продать
-        </button>
-
-        <button class="bg-[#0a0a0a] border border-zinc-800 rounded-xl h-16 text-xl font-semibold hover:bg-[#111] transition">
-            Купить
-        </button>
-
-        <button id="myAdsBtn"
-                class="bg-[#0a0a0a] border border-zinc-800 rounded-xl h-16 text-xl font-semibold hover:bg-[#111] transition">
-            Мои объявления
-        </button>
-
-    </div>
-
-    <!-- FILTER -->
-    <div class="dark-box rounded-xl p-5 mt-4">
-
-        <div class="flex items-center justify-between cursor-pointer">
-
-            <div class="text-2xl font-semibold">
-                Фильтры поиска
-            </div>
-
-            <div class="text-2xl text-zinc-500">
-                ⌄
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- FILTERS -->
-    <div class="dark-box rounded-xl p-5 mt-4">
-
-        <div class="flex flex-col xl:flex-row gap-4 xl:items-center xl:justify-between">
-
-            <div class="flex items-center gap-3 flex-wrap">
-
-                <div class="text-lg text-zinc-300">
-                    Цена (Ton):
-                </div>
-
-                <input
-                    id="minPrice"
-                    type="number"
-                    step="0.01"
-                    placeholder="от"
-                    class="input-dark rounded-lg px-4 h-12 w-28 text-white"
-                >
-
-                <div class="text-zinc-500">
-                    —
-                </div>
-
-                <input
-                    id="maxPrice"
-                    type="number"
-                    step="0.01"
-                    placeholder="до"
-                    class="input-dark rounded-lg px-4 h-12 w-28 text-white"
-                >
-
-            </div>
-
-            <div class="flex items-center gap-3">
-
-                <select id="sortSelect"
-                        class="input-dark rounded-lg px-4 h-12 text-white">
-                    <option value="asc">По возрастанию цены</option>
-                    <option value="desc">По убыванию цены</option>
-                </select>
-
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- VIEW SWITCH -->
-    <div class="dark-box rounded-xl p-2 mt-4 grid grid-cols-3 gap-2">
-
-        <button class="bg-[#0d0d0d] border border-zinc-800 rounded-lg h-14 text-lg">
-            Обычный
-        </button>
-
-        <button class="rounded-lg h-14 text-lg text-zinc-500">
-            Квадраты
-        </button>
-
-        <button class="rounded-lg h-14 text-lg text-zinc-500">
-            Линия
-        </button>
-
-    </div>
-
-    <!-- ADS -->
-    <div id="adsContainer"
-         class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 mt-4">
-    </div>
-
-</div>
-
-<!-- SELL MODAL -->
-<div id="sellModal" class="modal hidden">
-
-    <div class="dark-box rounded-xl p-5 w-full max-w-xl max-h-[95vh] overflow-y-auto">
-
-        <div class="flex items-center justify-between mb-4">
-
-            <div class="text-3xl font-bold">
-                Создать объявление
-            </div>
-
-            <button onclick="closeSellModal()" class="text-3xl">
-                ✕
-            </button>
-
-        </div>
-
-        <div class="space-y-4">
-
-            <input id="adName"
-                   placeholder="Название"
-                   class="input-dark rounded-lg px-4 h-14 w-full text-white">
-
-            <input id="adUsername"
-                   placeholder="@telegram"
-                   class="input-dark rounded-lg px-4 h-14 w-full text-white">
-
-            <input id="adPhoto"
-                   type="file"
-                   accept="image/*"
-                   class="input-dark rounded-lg px-4 py-4 w-full text-white">
-
-            <select id="adGeneration"
-                    class="input-dark rounded-lg px-4 h-14 w-full text-white">
-
-                <option value="">Поколение</option>
-
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-                <option>6</option>
-                <option>7</option>
-                <option>8</option>
-                <option>9</option>
-                <option>10</option>
-
-            </select>
-
-            <select id="adRarity"
-                    class="input-dark rounded-lg px-4 h-14 w-full text-white">
-
-                <option>Обычный</option>
-                <option>Редкий</option>
-                <option>Мифический</option>
-                <option>Легендарный</option>
-                <option>Мутант</option>
-
-            </select>
-
-            <select id="adBiome"
-                    class="input-dark rounded-lg px-4 h-14 w-full text-white">
-
-                <option>Луг</option>
-                <option>Лес</option>
-                <option>Пустыня</option>
-                <option>Горы</option>
-                <option>Море</option>
-                <option>Грядки</option>
-                <option>Лёд</option>
-                <option>Эхо</option>
-
-            </select>
-
-            <textarea id="adDescription"
-                      maxlength="150"
-                      placeholder="Описание"
-                      class="input-dark rounded-lg p-4 w-full h-32 text-white"></textarea>
-
-            <input id="adPrice"
-                   type="number"
-                   step="0.01"
-                   placeholder="Цена Ton"
-                   class="input-dark rounded-lg px-4 h-14 w-full text-white">
-
-            <button onclick="createAd()"
-                    class="bg-[#0a0a0a] border border-zinc-800 rounded-xl h-14 w-full text-xl font-semibold hover:bg-[#111] transition">
-
-                Выставить
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- AD VIEW -->
-<div id="viewModal" class="modal hidden">
-
-    <div id="viewContent"
-         class="dark-box rounded-xl overflow-hidden w-full max-w-2xl max-h-[95vh] overflow-y-auto">
-    </div>
-
-</div>
-
-<script>
-const tg = window.Telegram?.WebApp;
-
-if(tg){
-    tg.expand();
-
-    const user = tg.initDataUnsafe?.user;
-
-    if(user){
-
-        document.getElementById('profileName').textContent =
-            user.first_name || 'Пользователь';
-
-        document.getElementById('profileUsername').textContent =
-            '@' + (user.username || 'telegram');
-
-        document.getElementById('adUsername').value =
-            user.username || '';
-
-        if(user.photo_url){
-
-            const img = document.getElementById('profilePhoto');
-            img.src = user.photo_url;
-            img.classList.remove('hidden');
-
-            document.getElementById('profileIcon').style.display='none';
-        }
-    }
-}
-
-let ads = JSON.parse(localStorage.getItem('gatto_ads') || '[]');
-
-function saveAds(){
-    localStorage.setItem('gatto_ads', JSON.stringify(ads));
-}
-
-function renderAds(){
-
-    const container = document.getElementById('adsContainer');
-
-    container.innerHTML = '';
-
-    let filteredAds = [...ads];
-
-    const minPrice = parseFloat(document.getElementById('minPrice').value);
-    const maxPrice = parseFloat(document.getElementById('maxPrice').value);
-
-    if(!isNaN(minPrice)){
-        filteredAds = filteredAds.filter(ad => Number(ad.price) >= minPrice);
+      `;
     }
 
-    if(!isNaN(maxPrice)){
-        filteredAds = filteredAds.filter(ad => Number(ad.price) <= maxPrice);
+    function closeDetails() {
+      detailsModal.classList.add('hidden');
+      detailsModal.classList.remove('flex');
     }
 
-    const sortType = document.getElementById('sortSelect').value;
+    function getFilteredListings() {
+      const generation = document.getElementById('generationFilter').value;
+      const rarity = document.getElementById('rarityFilter').value;
+      const biome = document.getElementById('biomeFilter').value;
+      const search = document.getElementById('searchInput').value.toLowerCase();
 
-    filteredAds.sort((a,b)=>{
-        return sortType === 'asc'
-            ? Number(a.price) - Number(b.price)
-            : Number(b.price) - Number(a.price);
-    });
+      const minPrice = parseFloat(document.getElementById('minPriceFilter').value);
+      const maxPrice = parseFloat(document.getElementById('maxPriceFilter').value);
 
-    if(filteredAds.length === 0){
+      let data = [...listings];
 
-        container.innerHTML = `
-        <div class="dark-box rounded-xl h-[500px] flex items-center justify-center col-span-full">
+      if (currentTab === 'my') {
+        data = data.filter(x => x.owner === telegramUser.username);
+      }
 
-            <div class="text-center">
+      data = data.filter(item => {
+        return (
+          (!generation || item.generation == generation) &&
+          (!rarity || item.rarity === rarity) &&
+          (!biome || item.biome === biome) &&
+          (!search || item.title.toLowerCase().includes(search)) &&
+          (isNaN(minPrice) || item.price >= minPrice) &&
+          (isNaN(maxPrice) || item.price <= maxPrice)
+        );
+      });
 
-                <div class="text-6xl mb-4 text-zinc-700">
-                    ⊘
-                </div>
+      data.sort((a, b) => {
+        return sortAscending
+          ? a.price - b.price
+          : b.price - a.price;
+      });
 
-                <div class="text-2xl text-zinc-500">
-                    Объявлений пока нет
-                </div>
+      return data;
+    }
 
-            </div>
+    function renderListings() {
+      const data = getFilteredListings();
 
-        </div>
+      if (data.length === 0) {
+        marketContainer.innerHTML = `
+          <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-12 text-center text-zinc-400 text-xl">
+            Объявления не найдены
+          </div>
         `;
 
         return;
+      }
+
+      if (currentView === 1) {
+        marketContainer.className = 'grid md:grid-cols-2 xl:grid-cols-3 gap-5';
+
+        marketContainer.innerHTML = data.map(item => `
+          <div onclick="openDetails(${item.id})" class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden cursor-pointer hover:scale-[1.02] transition duration-200">
+            ${item.image
+              ? `<img src="${item.image}" class="w-full h-56 object-cover" />`
+              : `<div class="w-full h-56 bg-zinc-800 flex items-center justify-center text-6xl">📦</div>`}
+
+            <div class="p-5 space-y-3">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <h3 class="font-bold text-xl">${item.title}</h3>
+                  <div class="text-zinc-400 text-sm">${item.username}</div>
+                </div>
+
+                <div class="bg-emerald-500 text-black px-3 py-2 rounded-xl font-bold whitespace-nowrap">
+                  ${item.price} TON
+                </div>
+              </div>
+
+              <div class="flex flex-wrap gap-2 text-sm">
+                <div class="bg-zinc-800 px-3 py-1 rounded-full">${item.rarity}</div>
+                <div class="bg-zinc-800 px-3 py-1 rounded-full">${item.biome}</div>
+                <div class="bg-zinc-800 px-3 py-1 rounded-full">Gen ${item.generation}</div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      if (currentView === 2) {
+        marketContainer.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4';
+
+        marketContainer.innerHTML = data.map(item => `
+          <div onclick="openDetails(${item.id})" class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4 cursor-pointer hover:bg-zinc-800 transition text-center">
+            <div class="text-5xl mb-3">${item.image ? '🖼️' : '📦'}</div>
+            <div class="font-bold truncate">${item.title}</div>
+            <div class="text-zinc-400 text-sm mt-1">${item.price} TON</div>
+          </div>
+        `).join('');
+      }
+
+      if (currentView === 3) {
+        marketContainer.className = 'flex flex-col gap-3';
+
+        marketContainer.innerHTML = data.map(item => `
+          <div onclick="openDetails(${item.id})" class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:bg-zinc-800 transition flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <div class="font-bold text-xl">${item.title}</div>
+              <div class="text-zinc-400 text-sm mt-1">
+                ${item.rarity} • ${item.biome} • Gen ${item.generation}
+              </div>
+            </div>
+
+            <div class="font-black text-2xl text-emerald-400">
+              ${item.price} TON
+            </div>
+          </div>
+        `).join('');
+      }
     }
 
-    filteredAds.forEach((ad,index)=>{
-
-        container.innerHTML += `
-        <div onclick="openAd(${index})"
-             class="dark-box rounded-xl overflow-hidden cursor-pointer hover:bg-[#090909] transition">
-
-            ${
-                ad.image
-                ? `<img src="${ad.image}" class="w-full h-64 object-cover">`
-                : `<div class="h-64 flex items-center justify-center text-6xl text-zinc-700">⊘</div>`
-            }
-
-            <div class="p-5">
-
-                <div class="text-2xl font-bold mb-3">
-                    ${ad.name}
-                </div>
-
-                <div class="space-y-2 text-zinc-400">
-
-                    <div>Поколение: ${ad.generation}</div>
-                    <div>Редкость: ${ad.rarity}</div>
-                    <div>Биом: ${ad.biome}</div>
-
-                </div>
-
-            </div>
-
-            <div class="border-t border-zinc-900 p-5 text-cyan-400 text-2xl font-bold">
-                ${Number(ad.price).toFixed(2)} Ton
-            </div>
-
-        </div>
-        `;
+    ['searchInput', 'generationFilter', 'rarityFilter', 'biomeFilter', 'minPriceFilter', 'maxPriceFilter'].forEach(id => {
+      document.getElementById(id).addEventListener('input', renderListings);
+      document.getElementById(id).addEventListener('change', renderListings);
     });
-}
 
-function openSellModal(){
-    document.getElementById('sellModal').classList.remove('hidden');
-}
-
-function closeSellModal(){
-    document.getElementById('sellModal').classList.add('hidden');
-}
-
-function createAd(){
-
-    const file = document.getElementById('adPhoto').files[0];
-
-    const reader = new FileReader();
-
-    reader.onload = function(){
-
-        ads.unshift({
-            name: document.getElementById('adName').value,
-            username: document.getElementById('adUsername').value,
-            generation: document.getElementById('adGeneration').value,
-            rarity: document.getElementById('adRarity').value,
-            biome: document.getElementById('adBiome').value,
-            description: document.getElementById('adDescription').value,
-            price: document.getElementById('adPrice').value,
-            image: file ? reader.result : null
-        });
-
-        saveAds();
-        renderAds();
-        closeSellModal();
-    };
-
-    if(file){
-        reader.readAsDataURL(file);
-    }else{
-        reader.onload();
-    }
-}
-
-function openAd(index){
-
-    const ad = ads[index];
-
-    document.getElementById('viewContent').innerHTML = `
-
-        ${
-            ad.image
-            ? `<img src="${ad.image}" class="w-full h-80 object-cover">`
-            : ''
-        }
-
-        <div class="p-6">
-
-            <div class="text-4xl font-bold mb-2">
-                ${ad.name}
-            </div>
-
-            <div class="text-blue-400 text-lg mb-6">
-                @${ad.username}
-            </div>
-
-            <div class="space-y-3 text-lg text-zinc-300">
-
-                <div>Поколение: ${ad.generation}</div>
-                <div>Редкость: ${ad.rarity}</div>
-                <div>Биом: ${ad.biome}</div>
-
-            </div>
-
-            <div class="mt-6 text-zinc-400 text-lg">
-                ${ad.description || 'Без описания'}
-            </div>
-
-            <div class="mt-6 text-cyan-400 text-4xl font-bold">
-                ${Number(ad.price).toFixed(2)} Ton
-            </div>
-
-            <a href="https://t.me/${ad.username}"
-               target="_blank"
-               class="mt-6 flex items-center justify-center bg-[#0a0a0a] border border-zinc-800 rounded-xl h-14 text-xl font-semibold hover:bg-[#111] transition">
-
-                Написать в Telegram
-
-            </a>
-
-        </div>
-    `;
-
-    document.getElementById('viewModal').classList.remove('hidden');
-}
-
-document.getElementById('viewModal').onclick = function(e){
-
-    if(e.target.id === 'viewModal'){
-        this.classList.add('hidden');
-    }
-};
-
-document.getElementById('sellBtn').onclick = openSellModal;
-
-document.getElementById('minPrice').oninput = renderAds;
-document.getElementById('maxPrice').oninput = renderAds;
-document.getElementById('sortSelect').onchange = renderAds;
-
-renderAds();
-</script>
-
+    clearForm();
+    renderListings();
+  </script>
 </body>
 </html>
