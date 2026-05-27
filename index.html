@@ -471,7 +471,7 @@ async function loadListings() {
   try {
 
     const response = await fetch(
-      'database/listings.json?t=' + Date.now()
+      'https://workplace-coupled-sites-formats.trycloudflare.com/listings?t=' + Date.now()
     );
 
     listings = await response.json();
@@ -493,7 +493,7 @@ async function saveListings() {
 
   try {
 
-    await fetch('/save-listings', {
+    await fetch('https://workplace-coupled-sites-formats.trycloudflare.com/save-listings', {
 
       method: 'POST',
 
