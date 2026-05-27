@@ -463,18 +463,53 @@
       });
     }
 
-    let listings =
-      JSON.parse(
-        localStorage.getItem('ton_market_listings') || '[]'
-      );
+let listings = [];
 
-    function saveListings() {
+/* Загрузка базы */
+async function loadListings() {
 
-      localStorage.setItem(
-        'ton_market_listings',
-        JSON.stringify(listings)
-      );
+  try {
+
+    const response = await fetch(
+      'database/listings.json?t=' + Date.now()
+    );
+
+    listings = await response.json();
+
+    if (!Array.isArray(listings)) {
+      listings = [];
     }
+
+  } catch (e) {
+
+    listings = [];
+  }
+
+  renderListings();
+}
+
+/* Сохранение базы */
+async function saveListings() {
+
+  try {
+
+    await fetch('/save-listings', {
+
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json'
+      },
+
+      body: JSON.stringify(listings)
+
+    });
+
+  } catch (e) {
+
+    console.log('Ошибка сохранения');
+  }
+}
 
     function openSellModal() {
 
@@ -1059,7 +1094,7 @@
 
     clearForm();
 
-    renderListings();
+    loadListings();
 
   </script>
 
