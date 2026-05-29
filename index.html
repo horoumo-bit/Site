@@ -389,6 +389,8 @@
 
   </div>
 
+<script>
+
 const SUPABASE_URL = 'https://jxqgbxchaepryjvrmkxw.supabase.co/rest/v1/listings';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cWdieGNoYWVwcnlqdnJta3h3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4OTUzNDksImV4cCI6MjA5NTQ3MTM0OX0.tKfKzsWI8ZQ99Z5q0K1fTMgFEvstdjyDZiDRzqRcNhs';
 
@@ -461,7 +463,6 @@ async function createListing() {
   const price = parseFloat(document.getElementById('priceInput').value);
   const imageFile = document.getElementById('imageInput').files[0];
 
-
   if (!title || !generation || !rarity || !biome || !description || isNaN(price)) {
     alert('Заполните все обязательные поля');
     return;
@@ -478,13 +479,13 @@ async function createListing() {
     biome: biome,
     description: description,
     price: price,
-    image: '',  // сначала пустая, потом добавим если есть фото
+    image: '',
     createdat: new Date().toISOString()
   };
 
   if (imageFile) {
     const fileName = `${listing.id}_${Date.now()}.jpg`;
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from('listing-images')
       .upload(fileName, imageFile);
     
@@ -496,12 +497,10 @@ async function createListing() {
     }
   }
 
-  const { error } = await supabase
-    .from('listings')
-    .insert([listing]);
+  const { error } = await supabase.from('listings').insert([listing]);
   
   if (error) {
-    alert('Ошибка при создании объявления: ' + error.message);
+    alert('Ошибка: ' + error.message);
     return;
   }
   
@@ -521,10 +520,7 @@ async function removeListing(id) {
     await supabase.storage.from('listing-images').remove([fileName]);
   }
   
-  const { error } = await supabase
-    .from('listings')
-    .delete()
-    .eq('id', id);
+  const { error } = await supabase.from('listings').delete().eq('id', id);
   
   if (error) {
     alert('Ошибка удаления: ' + error.message);
@@ -574,6 +570,7 @@ function clearForm() {
   document.getElementById('descriptionInput').value = '';
   document.getElementById('priceInput').value = '';
   document.getElementById('imageInput').value = '';
+  document.getElementById('telegramUsername').value = telegramUser.username ? '@' + telegramUser.username : '';
 }
 
 function toggleSort() {
@@ -757,6 +754,6 @@ for (let i = 1; i <= 10; i++) {
 
 clearForm();
 loadListings();
-
+<script>
 </body>
 </html>
