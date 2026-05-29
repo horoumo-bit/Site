@@ -655,7 +655,9 @@ async function createListing() {
     imageUrl = await uploadImage(imageFile);
 
     if (!imageUrl) {
+
       alert('Ошибка загрузки фото');
+
       return;
     }
   }
@@ -686,11 +688,7 @@ async function createListing() {
 
   saveListingToSupabase(listing);
 
-} else {
-
-  saveListingToSupabase(listing);
-}
-    }
+  }
 
 async function uploadImage(file) {
 
@@ -897,7 +895,7 @@ async function removeListing(id) {
               item.owner === telegramUser.username
               ? `
                 <button
-                  onclick="removeListing(${item.id})"
+                  onclick="removeListing('${item.id}')"
                   class="bg-red-500 hover:bg-red-600 transition px-5 py-3 rounded-2xl font-bold"
                 >
                   Снять с продажи
