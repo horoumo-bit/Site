@@ -1104,6 +1104,21 @@ async function removeListing(id) {
         .addEventListener('change', renderListings);
     });
 
+db
+  .channel('listings-channel')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: 'listings'
+    },
+    () => {
+      loadListings();
+    }
+  )
+  .subscribe();    
+
     clearForm();
 
     loadListings();
