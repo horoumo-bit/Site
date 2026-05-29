@@ -37,28 +37,28 @@
 
       <div class="flex gap-2 w-full">
 
-        <button
-          onclick="openSellModal()"
-          class="flex-1 min-w-0 bg-emerald-500 hover:bg-emerald-600 transition px-5 py-3 rounded-2xl font-semibold text-center break-words leading-tight"
-        >
-          Продать
-        </button>
+  <button
+    onclick="openSellModal()"
+    class="flex-1 min-w-0 bg-emerald-500 hover:bg-emerald-600 transition px-5 py-3 rounded-2xl font-semibold text-center break-words leading-tight"
+  >
+    Продать
+  </button>
 
-        <button
-          onclick="showTab('buy')"
-          class="flex-1 min-w-0 bg-blue-500 hover:bg-blue-600 transition px-5 py-3 rounded-2xl font-semibold text-center break-words leading-tight"
-        >
-          Купить
-        </button>
+  <button
+    onclick="showTab('buy')"
+    class="flex-1 min-w-0 bg-blue-500 hover:bg-blue-600 transition px-5 py-3 rounded-2xl font-semibold text-center break-words leading-tight"
+  >
+    Купить
+  </button>
 
-        <button
-          onclick="showTab('my')"
-          class="flex-1 min-w-0 bg-zinc-800 hover:bg-zinc-700 transition px-5 py-3 rounded-2xl font-semibold border border-zinc-700 text-center break-words leading-tight"
-        >
-          Мои объявления
-        </button>
+  <button
+    onclick="showTab('my')"
+    class="flex-1 min-w-0 bg-zinc-800 hover:bg-zinc-700 transition px-5 py-3 rounded-2xl font-semibold border border-zinc-700 text-center break-words leading-tight"
+  >
+    Мои объявления
+  </button>
 
-      </div>
+</div>
     </div>
 
     <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4 mb-5">
@@ -118,11 +118,25 @@
               Редкость
             </option>
 
-            <option>Обычный</option>
-            <option>Редкий</option>
-            <option>Мифический</option>
-            <option>Легендарный</option>
-            <option>Мутант</option>
+            <option>
+              Обычный
+            </option>
+
+            <option>
+              Редкий
+            </option>
+
+            <option>
+              Мифический
+            </option>
+
+            <option>
+              Легендарный
+            </option>
+
+            <option>
+              Мутант
+            </option>
           </select>
 
           <select
@@ -133,14 +147,37 @@
               Биом
             </option>
 
-            <option>Луг</option>
-            <option>Лес</option>
-            <option>Пустыня</option>
-            <option>Горы</option>
-            <option>Море</option>
-            <option>Грядки</option>
-            <option>Лёд</option>
-            <option>Эхо</option>
+            <option>
+              Луг
+            </option>
+
+            <option>
+              Лес
+            </option>
+
+            <option>
+              Пустыня
+            </option>
+
+            <option>
+              Горы
+            </option>
+
+            <option>
+              Море
+            </option>
+
+            <option>
+              Грядки
+            </option>
+
+            <option>
+              Лёд
+            </option>
+
+            <option>
+              Эхо
+            </option>
           </select>
 
         </div>
@@ -212,13 +249,19 @@
           class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 outline-none"
         />
 
-        <input
-          id="telegramUsername"
-          maxlength="40"
-          type="text"
-          readonly
-          class="bg-zinc-700 text-zinc-400 border border-zinc-700 rounded-xl px-4 py-3 outline-none w-full cursor-not-allowed"
-        />
+        <div>
+          <input
+            id="telegramUsername"
+            maxlength="40"
+            type="text"
+            readonly
+            class="bg-zinc-700 text-zinc-400 border border-zinc-700 rounded-xl px-4 py-3 outline-none w-full cursor-not-allowed"
+          />
+
+          <div class="text-zinc-500 text-sm mt-2 px-1">
+            Username нельзя изменить
+          </div>
+        </div>
 
         <input
           id="imageInput"
@@ -231,40 +274,85 @@
           id="generationInput"
           class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3"
         >
-          <option value="">Выберите поколение</option>
+          <option value="">
+            Выберите поколение
+          </option>
         </select>
 
         <select
           id="rarityInput"
           class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3"
         >
-          <option value="">Редкость</option>
-          <option>Обычный</option>
-          <option>Редкий</option>
-          <option>Мифический</option>
-          <option>Легендарный</option>
-          <option>Мутант</option>
+          <option value="">
+            Редкость
+          </option>
+
+          <option>
+            Обычный
+          </option>
+
+          <option>
+            Редкий
+          </option>
+
+          <option>
+            Мифический
+          </option>
+
+          <option>
+            Легендарный
+          </option>
+
+          <option>
+            Мутант
+          </option>
         </select>
 
         <select
           id="biomeInput"
           class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3"
         >
-          <option value="">Биом</option>
-          <option>Луг</option>
-          <option>Лес</option>
-          <option>Пустыня</option>
-          <option>Горы</option>
-          <option>Море</option>
-          <option>Грядки</option>
-          <option>Лёд</option>
-          <option>Эхо</option>
+          <option value="">
+            Биом
+          </option>
+
+          <option>
+            Луг
+          </option>
+
+          <option>
+            Лес
+          </option>
+
+          <option>
+            Пустыня
+          </option>
+
+          <option>
+            Горы
+          </option>
+
+          <option>
+            Море
+          </option>
+
+          <option>
+            Грядки
+          </option>
+
+          <option>
+            Лёд
+          </option>
+
+          <option>
+            Эхо
+          </option>
         </select>
 
         <textarea
           id="descriptionInput"
           maxlength="150"
-          placeholder="Особенности"
+          placeholder="Особенности (до 150 символов)"
           class="bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 h-28 resize-none outline-none"
         ></textarea>
 
@@ -288,16 +376,42 @@
     </div>
   </div>
 
+  <div
+    id="detailsModal"
+    class="fixed inset-0 bg-black/80 hidden items-start justify-center z-50 p-3 overflow-y-auto overscroll-contain"
+  >
+
+    <div
+      id="detailsContent"
+      class="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-3xl overflow-hidden my-4"
+    ></div>
+
+  </div>
+
   <script>
 
     const SUPABASE_URL = 'https://jxqgbxchaepryjvrmkxw.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cWdieGNoYWVwcnlqdnJta3h3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4OTUzNDksImV4cCI6MjA5NTQ3MTM0OX0.tKfKzsWI8ZQ99Z5q0K1fTMgFEvstdjyDZiDRzqRcNhs';
 
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-    const db = window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY
-    );
+    const marketContainer = document.getElementById('marketContainer');
+    const detailsModal = document.getElementById('detailsModal');
+    const detailsContent = document.getElementById('detailsContent');
+
+    let currentTab = 'buy';
+    let sortAscending = true;
+    let filtersOpen = false;
+    let currentView = 1;
+
+    const viewNames = {
+      1: 'Обычный',
+      2: 'Квадратики',
+      3: 'Линия'
+    };
 
     const tg = window.Telegram?.WebApp;
 
@@ -308,6 +422,7 @@
     };
 
     if (tg) {
+
       tg.expand();
       tg.ready();
 
@@ -315,8 +430,6 @@
         telegramUser = tg.initDataUnsafe.user;
       }
     }
-
-    let listings = [];
 
     document.getElementById('profileName').innerText =
       telegramUser.first_name || 'Пользователь';
@@ -326,241 +439,114 @@
       ? '@' + telegramUser.username
       : '@telegram';
 
-    document.getElementById('telegramUsername').value =
-      telegramUser.username || '';
+    if (telegramUser.photo_url) {
 
-    async function loadListings() {
+      const img = document.getElementById('profilePhoto');
 
-      const { data, error } = await db
-        .from('listings')
-        .select('*')
-        .order('created_at', { ascending: false });
+      img.src = telegramUser.photo_url;
 
-      if (error) {
-        console.log(error);
-        return;
-      }
+      img.classList.remove('hidden');
 
-      listings = (data || []).map(item => ({
-        ...item,
-        ownerName: item.owner_name,
-        createdAt: item.created_at
-      }));
-
-      renderListings();
+      document
+        .getElementById('profilePlaceholder')
+        .classList.add('hidden');
     }
 
-    async function compressImage(file) {
+    const generationSelects = [
+      document.getElementById('generationInput'),
+      document.getElementById('generationFilter')
+    ];
 
-      return new Promise(resolve => {
+    for (let i = 1; i <= 10; i++) {
 
-        const img = new Image();
-        const reader = new FileReader();
+      generationSelects.forEach(select => {
 
-        reader.onload = e => {
-          img.src = e.target.result;
-        };
+        const option = document.createElement('option');
 
-        img.onload = () => {
+        option.value = i;
 
-          const canvas = document.createElement('canvas');
+        option.innerText = i + ' поколение';
 
-          const maxWidth = 1200;
+        select.appendChild(option.cloneNode(true));
 
-          const scale = maxWidth / img.width;
-
-          canvas.width = maxWidth;
-          canvas.height = img.height * scale;
-
-          const ctx = canvas.getContext('2d');
-
-          ctx.drawImage(
-            img,
-            0,
-            0,
-            canvas.width,
-            canvas.height
-          );
-
-          canvas.toBlob(
-            blob => resolve(blob),
-            'image/jpeg',
-            0.7
-          );
-        };
-
-        reader.readAsDataURL(file);
       });
     }
 
-    async function uploadImage(file) {
+let listings = [];
 
-      const fileName = `${crypto.randomUUID()}.jpg`;
-      const filePath = `listings/${fileName}`;
+/* Загрузка базы */
 
-      const { error } = await db.storage
-        .from('listing-images')
-        .upload(filePath, file);
+async function loadListings() {
 
-      if (error) {
-        console.log(error);
-        return '';
-      }
+  const { data, error } = await db
+    .from('listings')
+    .select('*')
+    .order('created_at', { ascending: false });
 
-      const { data } = db.storage
-        .from('listing-images')
-        .getPublicUrl(filePath);
+  if (error) {
+    console.log(error);
+    listings = [];
+    return;
+  }
 
-      return data.publicUrl;
+  listings = (data || []).map(item => ({
+    ...item,
+    ownerName: item.owner_name,
+    createdAt: item.created_at
+  }));
+
+  renderListings();
+}
+
+/* Сохранение базы */
+
+async function saveListingToSupabase(listing) {
+
+  const { error } = await db
+    .from('listings')
+    .insert([{
+      id: listing.id,
+      owner: listing.owner,
+      owner_name: listing.ownerName,
+      title: listing.title,
+      username: listing.username,
+      generation: listing.generation,
+      rarity: listing.rarity,
+      biome: listing.biome,
+      description: listing.description,
+      price: listing.price,
+      image: listing.image,
+    }]);
+
+  if (error) {
+    console.log(error);
+    alert('Ошибка сохранения');
+    return;
+  }
+
+  
+db
+  .channel('listings-channel')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: 'listings'
+    },
+    () => {
+      loadListings();
     }
+  )
+  .subscribe();
 
-    async function saveListingToSupabase(listing) {
 
-      const { error } = await db
-        .from('listings')
-        .insert([{
-          id: listing.id,
-          owner: listing.owner,
-          owner_name: listing.ownerName,
-          title: listing.title,
-          username: listing.username,
-          generation: listing.generation,
-          rarity: listing.rarity,
-          biome: listing.biome,
-          description: listing.description,
-          price: listing.price,
-          image: listing.image,
-        }]);
+    loadListings();
 
-      if (error) {
-        console.log(error);
-      }
-    }
+  closeSellModal();
 
-    async function createListing() {
-
-      const title =
-        document.getElementById('itemTitle').value.trim();
-
-      const username =
-        document.getElementById('telegramUsername').value.trim();
-
-      const generation =
-        document.getElementById('generationInput').value;
-
-      const rarity =
-        document.getElementById('rarityInput').value;
-
-      const biome =
-        document.getElementById('biomeInput').value;
-
-      const description =
-        document.getElementById('descriptionInput').value.trim();
-
-      const price =
-        parseFloat(document.getElementById('priceInput').value);
-
-      const imageFile =
-        document.getElementById('imageInput').files[0];
-
-      if (
-        !title ||
-        !username ||
-        !generation ||
-        !rarity ||
-        !biome ||
-        !description ||
-        isNaN(price)
-      ) {
-        alert('Заполните все поля');
-        return;
-      }
-
-      let imageUrl = '';
-
-      if (imageFile) {
-
-        const compressed = await compressImage(imageFile);
-
-        imageUrl = await uploadImage(compressed);
-      }
-
-      const listing = {
-
-        id: crypto.randomUUID(),
-
-        owner: telegramUser.username || username,
-
-        ownerName:
-          telegramUser.first_name || 'Пользователь',
-
-        title,
-        username,
-        generation,
-        rarity,
-        biome,
-        description,
-
-        price: Number(price.toFixed(2)),
-
-        image: imageUrl,
-
-        createdAt: new Date().toISOString()
-      };
-
-      listings.unshift(listing);
-
-      renderListings();
-
-      closeSellModal();
-
-      clearForm();
-
-      saveListingToSupabase(listing);
-    }
-
-    function clearForm() {
-
-      document.getElementById('itemTitle').value = '';
-      document.getElementById('generationInput').value = '';
-      document.getElementById('rarityInput').value = '';
-      document.getElementById('biomeInput').value = '';
-      document.getElementById('descriptionInput').value = '';
-      document.getElementById('priceInput').value = '';
-      document.getElementById('imageInput').value = '';
-    }
-
-    async function removeListing(id) {
-
-      if (!confirm('Удалить объявление?'))
-        return;
-
-      const item = listings.find(x => x.id === id);
-
-      if (!item) return;
-
-      if (item.image) {
-
-        const imagePath =
-          item.image.split('/listing-images/')[1];
-
-        if (imagePath) {
-
-          await db.storage
-            .from('listing-images')
-            .remove([imagePath]);
-        }
-      }
-
-      await db
-        .from('listings')
-        .delete()
-        .eq('id', id);
-
-      listings = listings.filter(x => x.id !== id);
-
-      renderListings();
-    }
+  clearForm();
+}
 
     function openSellModal() {
 
@@ -584,79 +570,353 @@
         .classList.remove('flex');
     }
 
-    function renderListings() {
+    function toggleFilters() {
 
-      const container =
-        document.getElementById('marketContainer');
+      filtersOpen = !filtersOpen;
 
-      if (!listings.length) {
+      const block =
+        document.getElementById('filtersBlock');
 
-        container.innerHTML = `
-          <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-12 text-center text-zinc-400 text-xl">
-            Объявлений пока нет
-          </div>
-        `;
+      const arrow =
+        document.getElementById('filterArrow');
+
+      if (filtersOpen) {
+
+        block.classList.remove('hidden');
+
+        arrow.innerText = '⬆';
+
+      } else {
+
+        block.classList.add('hidden');
+
+        arrow.innerText = '⬇';
+      }
+    }
+
+    function changeView() {
+
+      currentView++;
+
+      if (currentView > 3) currentView = 1;
+
+      document.getElementById(
+        'viewModeText'
+      ).innerText = viewNames[currentView];
+
+      renderListings();
+    }
+
+    function createListing() {
+
+      const title =
+        document.getElementById('itemTitle').value.trim();
+
+      const username =
+        document.getElementById('telegramUsername').value.trim();
+
+      const generation =
+        document.getElementById('generationInput').value;
+
+      const rarity =
+        document.getElementById('rarityInput').value;
+
+      const biome =
+        document.getElementById('biomeInput').value;
+
+      const description =
+        document.getElementById('descriptionInput').value.trim();
+
+      const price =
+        parseFloat(
+          document.getElementById('priceInput').value
+        );
+
+      const imageFile =
+        document.getElementById('imageInput').files[0];
+
+      if (
+        !title ||
+        !username ||
+        !generation ||
+        !rarity ||
+        !biome ||
+        !description ||
+        isNaN(price)
+      ) {
+
+        alert('Заполните все обязательные поля');
 
         return;
       }
 
-      container.className =
-        'grid md:grid-cols-2 xl:grid-cols-3 gap-5';
+      const listing = {
 
-      container.innerHTML = listings.map(item => `
+        id: Date.now(),
 
-        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden">
+        owner:
+          telegramUser.username || username,
+
+        ownerName:
+          telegramUser.first_name || 'Пользователь',
+
+        title,
+        username,
+        generation,
+        rarity,
+        biome,
+        description,
+
+        price: Number(price.toFixed(2)),
+
+        image: '',
+
+        createdAt: new Date().toISOString()
+      };
+
+      if (imageFile) {
+
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+
+          listing.image = e.target.result;
+
+          saveListingToSupabase(listing);
+
+          closeSellModal();
+
+          clearForm();
+        };
+
+        reader.readAsDataURL(imageFile);
+
+} else {
+
+  saveListingToSupabase(listing);
+}
+    }
+
+    function clearForm() {
+
+      document.getElementById('itemTitle').value = '';
+
+      document.getElementById('telegramUsername').value =
+        telegramUser.username
+        ? '@' + telegramUser.username
+        : '';
+
+      document.getElementById('generationInput').value = '';
+
+      document.getElementById('rarityInput').value = '';
+
+      document.getElementById('biomeInput').value = '';
+
+      document.getElementById('descriptionInput').value = '';
+
+      document.getElementById('priceInput').value = '';
+
+      document.getElementById('imageInput').value = '';
+    }
+
+    function toggleSort() {
+
+      sortAscending = !sortAscending;
+
+      document.getElementById('sortButton').innerText =
+        sortAscending
+        ? 'Цена ↑'
+        : 'Цена ↓';
+
+      renderListings();
+    }
+
+    function showTab(tab) {
+
+      currentTab = tab;
+
+      renderListings();
+    }
+
+async function removeListing(id) {
+
+  if (!confirm('Снять объявление с продажи?'))
+    return;
+
+  const item =
+    listings.find(x => x.id === id);
+
+  if (!item) return;
+
+  /* Удаляем картинку */
+
+  if (item.image) {
+
+    try {
+
+      const imagePath =
+        item.image.split('/listing-images/')[1];
+
+      if (imagePath) {
+
+        await db.storage
+          .from('listing-images')
+          .remove([imagePath]);
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  /* Удаляем объявление */
+
+  const { error } = await db
+    .from('listings')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  listings =
+    listings.filter(x => x.id !== id);
+
+  renderListings();
+
+  closeDetails();
+}
+
+  loadListings();
+
+  closeDetails();
+}
+
+    function openDetails(id) {
+
+      const item =
+        listings.find(x => x.id === id);
+
+      if (!item) return;
+
+      detailsModal.classList.remove('hidden');
+
+      detailsModal.classList.add('flex');
+
+      detailsContent.innerHTML = `
+        <div class="relative">
 
           ${
             item.image
-            ? `<img src="${item.image}" class="w-full h-56 object-cover" />`
-            : `<div class="w-full h-56 bg-zinc-800 flex items-center justify-center text-6xl">📦</div>`
+            ? `<img src="${item.image}" class="w-full h-80 object-cover" />`
+            : `<div class="w-full h-80 bg-zinc-800 flex items-center justify-center text-7xl">📦</div>`
           }
 
-          <div class="p-5 space-y-3">
+          <button
+            onclick="closeDetails()"
+            class="absolute top-4 right-4 bg-black/50 hover:bg-black/70 w-12 h-12 rounded-full text-2xl"
+          >
+            ✕
+          </button>
 
-            <div class="flex items-start justify-between gap-3">
+        </div>
 
-              <div>
-                <h3 class="font-bold text-xl">
-                  ${item.title}
-                </h3>
+        <div class="p-6 space-y-4">
 
-                <div class="text-zinc-400 text-sm">
-                  @${item.username}
-                </div>
+          <div class="flex flex-wrap items-start justify-between gap-4">
+
+            <div>
+              <h2 class="text-3xl font-bold">
+                ${item.title}
+              </h2>
+
+              <div class="text-zinc-400 mt-1">
+                Продавец: ${item.ownerName}
               </div>
-
-              <div class="bg-emerald-500 text-black px-3 py-2 rounded-xl font-bold whitespace-nowrap">
-                ${item.price} TON
-              </div>
-
             </div>
 
-            <div class="flex flex-wrap gap-2 text-sm">
+            <div class="bg-emerald-500 text-black px-5 py-3 rounded-2xl font-black text-2xl">
+              ${item.price} TON
+            </div>
 
-              <div class="bg-zinc-800 px-3 py-1 rounded-full">
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-3">
+
+            <div class="bg-zinc-800 rounded-2xl p-4">
+              <div class="text-zinc-400 text-sm">
+                Поколение
+              </div>
+
+              <div class="font-bold text-lg">
+                ${item.generation}
+              </div>
+            </div>
+
+            <div class="bg-zinc-800 rounded-2xl p-4">
+              <div class="text-zinc-400 text-sm">
+                Редкость
+              </div>
+
+              <div class="font-bold text-lg">
                 ${item.rarity}
               </div>
+            </div>
 
-              <div class="bg-zinc-800 px-3 py-1 rounded-full">
+            <div class="bg-zinc-800 rounded-2xl p-4">
+              <div class="text-zinc-400 text-sm">
+                Биом
+              </div>
+
+              <div class="font-bold text-lg">
                 ${item.biome}
               </div>
+            </div>
 
-              <div class="bg-zinc-800 px-3 py-1 rounded-full">
-                Gen ${item.generation}
+            <div class="bg-zinc-800 rounded-2xl p-4">
+              <div class="text-zinc-400 text-sm">
+                Telegram
               </div>
 
+              <div class="font-bold text-lg">
+                ${item.username}
+              </div>
             </div>
+
+          </div>
+
+          <div class="bg-zinc-800 rounded-2xl p-5">
+
+            <div class="text-zinc-400 text-sm mb-2">
+              Описание
+            </div>
+
+            <div>
+              ${item.description}
+            </div>
+
+          </div>
+
+          <div class="flex flex-wrap gap-3 pt-2">
+
+            <a
+              href="https://t.me/${item.username.replace('@', '')}"
+              target="_blank"
+              class="bg-blue-500 hover:bg-blue-600 transition px-5 py-3 rounded-2xl font-bold"
+            >
+              Написать в Telegram
+            </a>
 
             ${
               item.owner === telegramUser.username
               ? `
                 <button
                   onclick="removeListing('${item.id}')"
-                  class="w-full bg-red-500 hover:bg-red-600 transition py-3 rounded-2xl font-bold mt-3"
+                  class="bg-red-500 hover:bg-red-600 transition px-5 py-3 rounded-2xl font-bold"
                 >
-                  Удалить
+                  Снять с продажи
                 </button>
               `
               : ''
@@ -665,9 +925,241 @@
           </div>
 
         </div>
-
-      `).join('');
+      `;
     }
+
+    function closeDetails() {
+
+      detailsModal.classList.add('hidden');
+
+      detailsModal.classList.remove('flex');
+    }
+
+    function getFilteredListings() {
+
+      const generation =
+        document.getElementById('generationFilter').value;
+
+      const rarity =
+        document.getElementById('rarityFilter').value;
+
+      const biome =
+        document.getElementById('biomeFilter').value;
+
+      const search =
+        document.getElementById('searchInput').value.toLowerCase();
+
+      const minPrice =
+        parseFloat(
+          document.getElementById('minPriceFilter').value
+        );
+
+      const maxPrice =
+        parseFloat(
+          document.getElementById('maxPriceFilter').value
+        );
+
+      let data = [...listings];
+
+      if (currentTab === 'my') {
+
+        data =
+          data.filter(
+            x => x.owner === telegramUser.username
+          );
+      }
+
+      data = data.filter(item => {
+
+        return (
+
+          (!generation || item.generation == generation) &&
+
+          (!rarity || item.rarity === rarity) &&
+
+          (!biome || item.biome === biome) &&
+
+          (!search || item.title.toLowerCase().includes(search)) &&
+
+          (isNaN(minPrice) || item.price >= minPrice) &&
+
+          (isNaN(maxPrice) || item.price <= maxPrice)
+        );
+      });
+
+      data.sort((a, b) => {
+
+        return sortAscending
+          ? a.price - b.price
+          : b.price - a.price;
+      });
+
+      return data;
+    }
+
+    function renderListings() {
+
+      const data = getFilteredListings();
+
+      if (data.length === 0) {
+
+        marketContainer.innerHTML = `
+          <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-12 text-center text-zinc-400 text-xl">
+            Объявления не найдены
+          </div>
+        `;
+
+        return;
+      }
+
+      if (currentView === 1) {
+
+        marketContainer.className =
+          'grid md:grid-cols-2 xl:grid-cols-3 gap-5';
+
+        marketContainer.innerHTML =
+          data.map(item => `
+
+            <div
+              onclick="openDetails('${item.id}')"
+              class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden cursor-pointer hover:scale-[1.02] transition duration-200"
+            >
+
+              ${
+                item.image
+                ? `<img src="${item.image}" class="w-full h-56 object-cover" />`
+                : `<div class="w-full h-56 bg-zinc-800 flex items-center justify-center text-6xl">📦</div>`
+              }
+
+              <div class="p-5 space-y-3">
+
+                <div class="flex items-start justify-between gap-3">
+
+                  <div>
+                    <h3 class="font-bold text-xl">
+                      ${item.title}
+                    </h3>
+
+                    <div class="text-zinc-400 text-sm">
+                      ${item.username}
+                    </div>
+                  </div>
+
+                  <div class="bg-emerald-500 text-black px-3 py-2 rounded-xl font-bold whitespace-nowrap">
+                    ${item.price} TON
+                  </div>
+
+                </div>
+
+                <div class="flex flex-wrap gap-2 text-sm">
+
+                  <div class="bg-zinc-800 px-3 py-1 rounded-full">
+                    ${item.rarity}
+                  </div>
+
+                  <div class="bg-zinc-800 px-3 py-1 rounded-full">
+                    ${item.biome}
+                  </div>
+
+                  <div class="bg-zinc-800 px-3 py-1 rounded-full">
+                    Gen ${item.generation}
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `).join('');
+      }
+
+      if (currentView === 2) {
+
+        marketContainer.className =
+          'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4';
+
+        marketContainer.innerHTML =
+          data.map(item => `
+
+            <div
+              onclick="openDetails('${item.id}')"
+              class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4 cursor-pointer hover:bg-zinc-800 transition text-center"
+            >
+
+              <div class="text-5xl mb-3">
+                ${item.image ? '🖼️' : '📦'}
+              </div>
+
+              <div class="font-bold truncate">
+                ${item.title}
+              </div>
+
+              <div class="text-zinc-400 text-sm mt-1">
+                ${item.price} TON
+              </div>
+
+            </div>
+
+          `).join('');
+      }
+
+      if (currentView === 3) {
+
+        marketContainer.className =
+          'flex flex-col gap-3';
+
+        marketContainer.innerHTML =
+          data.map(item => `
+
+            <div
+              onclick="openDetails('${item.id}')"
+              class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:bg-zinc-800 transition flex flex-wrap items-center justify-between gap-4"
+            >
+
+              <div>
+
+                <div class="font-bold text-xl">
+                  ${item.title}
+                </div>
+
+                <div class="text-zinc-400 text-sm mt-1">
+                  ${item.rarity} • ${item.biome} • Gen ${item.generation}
+                </div>
+
+              </div>
+
+              <div class="font-black text-2xl text-emerald-400">
+                ${item.price} TON
+              </div>
+
+            </div>
+
+          `).join('');
+      }
+    }
+
+    [
+      'searchInput',
+      'generationFilter',
+      'rarityFilter',
+      'biomeFilter',
+      'minPriceFilter',
+      'maxPriceFilter'
+    ].forEach(id => {
+
+      document
+        .getElementById(id)
+        .addEventListener('input', renderListings);
+
+      document
+        .getElementById(id)
+        .addEventListener('change', renderListings);
+    });
+
+    
+
+    clearForm();
 
     loadListings();
 
