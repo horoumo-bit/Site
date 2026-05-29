@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TON Market</title>
+  <title>Gatto Shop</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -1103,6 +1103,47 @@ async function removeListing(id) {
         .getElementById(id)
         .addEventListener('change', renderListings);
     });
+
+db
+  .channel('listings-channel')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'listings'
+    },
+    payload => {
+
+      const item = payload.new;
+
+      listings.unshift({
+        ...item,
+        ownerName: item.owner_name,
+        createdAt: item.created_at
+      });
+
+      renderListings();
+    }
+  )
+  .on(
+    'postgres_changes',
+    {
+      event: 'DELETE',
+      schema: 'public',
+      table: 'listings'
+    },
+    payload => {
+
+      listings =
+        listings.filter(
+          x => x.id !== payload.old.id
+        );
+
+      renderListings();
+    }
+  )
+  .subscribe();
 
     clearForm();
 
