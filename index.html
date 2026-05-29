@@ -968,7 +968,7 @@ async function removeListing(id) {
           data.map(item => `
 
             <div
-              onclick="openDetails(${item.id})"
+              onclick="openDetails('${item.id}')"
               class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden cursor-pointer hover:scale-[1.02] transition duration-200"
             >
 
@@ -1030,7 +1030,7 @@ async function removeListing(id) {
           data.map(item => `
 
             <div
-              onclick="openDetails(${item.id})"
+              onclick="openDetails('${item.id}')"
               class="bg-zinc-900 border border-zinc-800 rounded-3xl p-4 cursor-pointer hover:bg-zinc-800 transition text-center"
             >
 
@@ -1060,7 +1060,7 @@ async function removeListing(id) {
           data.map(item => `
 
             <div
-              onclick="openDetails(${item.id})"
+              onclick="openDetails('${item.id}')"
               class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5 cursor-pointer hover:bg-zinc-800 transition flex flex-wrap items-center justify-between gap-4"
             >
 
