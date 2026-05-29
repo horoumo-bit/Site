@@ -7,7 +7,7 @@
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 </head>
 
 <body class="bg-zinc-950 text-white min-h-screen overflow-x-hidden">
@@ -390,6 +390,14 @@
 
   <script>
 
+    const SUPABASE_URL = 'https://jxqgbxchaepryjvrmkxw.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cWdieGNoYWVwcnlqdnJta3h3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4OTUzNDksImV4cCI6MjA5NTQ3MTM0OX0.tKfKzsWI8ZQ99Z5q0K1fTMgFEvstdjyDZiDRzqRcNhs';
+
+    const supabase = window.supabase.createClient(
+      SUPABASE_URL,
+      SUPABASE_KEY
+    );
+
     const marketContainer = document.getElementById('marketContainer');
     const detailsModal = document.getElementById('detailsModal');
     const detailsContent = document.getElementById('detailsContent');
@@ -398,11 +406,6 @@
     let sortAscending = true;
     let filtersOpen = false;
     let currentView = 1;
-    
-    const supabase = supabaseJs.createClient(
-      'https://jxqgbxchaepryjvrmkxw.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cWdieGNoYWVwcnlqdnJta3h3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4OTUzNDksImV4cCI6MjA5NTQ3MTM0OX0.tKfKzsWI8ZQ99Z5q0K1fTMgFEvstdjyDZiDRzqRcNhs'
-    );
 
     const viewNames = {
       1: 'Обычный',
@@ -472,32 +475,57 @@
 let listings = [];
 
 /* Загрузка базы */
-    async function loadListings() {
-      try {
-        const { data, error } = await supabase
-          .from('listings')
-          .select('*')
-          .order('created_at', { ascending: false });
-        if (error) throw error;
-        listings = data || [];
-      } catch (e) {
-        listings = [];
-      }
-      renderListings();
-    }
+
+async function loadListings() {
+
+  const { data, error } = await supabase
+    .from('listings')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.log(error);
+    listings = [];
+    return;
+  }
+
+  listings = data || [];
+
+  renderListings();
+}
 
 /* Сохранение базы */
-    async function saveListings() {
-      // Этот код больше не нужен, но оставляем пустым чтобы не сломать
-    }
-    
-    async function syncToSupabase(listing, isDelete = false) {
-      if (isDelete) {
-        await supabase.from('listings').delete().eq('id', listing.id);
-      } else {
-        await supabase.from('listings').upsert([listing]);
-      }
-    }
+
+async function saveListingToSupabase(listing) {
+
+  const { error } = await supabase
+    .from('listings')
+    .insert([{
+      id: listing.id,
+      owner: listing.owner,
+      owner_name: listing.ownerName,
+      title: listing.title,
+      username: listing.username,
+      generation: listing.generation,
+      rarity: listing.rarity,
+      biome: listing.biome,
+      description: listing.description,
+      price: listing.price,
+      image: listing.image,
+    }]);
+
+  if (error) {
+    console.log(error);
+    alert('Ошибка сохранения');
+    return;
+  }
+
+  loadListings();
+
+  closeSellModal();
+
+  clearForm();
+}
 
     function openSellModal() {
 
@@ -633,11 +661,7 @@ let listings = [];
 
           listing.image = e.target.result;
 
-          listings.unshift(listing);
-
-          saveListings();
-
-          renderListings();
+          saveListingToSupabase(listing);
 
           closeSellModal();
 
@@ -701,21 +725,25 @@ let listings = [];
       renderListings();
     }
 
-    function removeListing(id) {
+async function removeListing(id) {
 
-      if (
-        !confirm('Снять объявление с продажи?')
-      ) return;
+  if (!confirm('Снять объявление с продажи?'))
+    return;
 
-      listings =
-        listings.filter(item => item.id !== id);
+  const { error } = await supabase
+    .from('listings')
+    .delete()
+    .eq('id', id);
 
-      saveListings();
+  if (error) {
+    console.log(error);
+    return;
+  }
 
-      renderListings();
+  loadListings();
 
-      closeDetails();
-    }
+  closeDetails();
+}
 
     function openDetails(id) {
 
