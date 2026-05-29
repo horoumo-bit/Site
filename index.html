@@ -524,26 +524,17 @@ async function saveListingToSupabase(listing) {
     return;
   }
 
-  loadListings();
-  
-  db
-  .channel('listings-channel')
-  .on(
-    'postgres_changes',
-    {
-      event: '*',
-      schema: 'public',
-      table: 'listings'
-    },
-    () => {
-      loadListings();
-    }
-  )
-  .subscribe();
+  /* МГНОВЕННО закрываем */
 
   closeSellModal();
 
   clearForm();
+
+  /* Локально обновляем */
+
+  listings.unshift(listing);
+
+  renderListings();
 }
 
     function openSellModal() {
@@ -760,6 +751,39 @@ async function removeListing(id) {
 
   if (!confirm('Снять объявление с продажи?'))
     return;
+
+  const item =
+    listings.find(x => x.id === id);
+
+  if (!item) return;
+
+  /* Удаление картинки из storage */
+
+  if (item.image) {
+
+    try {
+
+      const imagePath =
+        item.image.split('/listing-images/')[1];
+
+      if (imagePath) {
+
+        const { error: storageError } =
+          await db.storage
+            .from('listing-images')
+            .remove([imagePath]);
+
+        if (storageError) {
+          console.log(storageError);
+        }
+      }
+
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  /* Удаление записи */
 
   const { error } = await db
     .from('listings')
@@ -1138,6 +1162,21 @@ async function removeListing(id) {
         .getElementById(id)
         .addEventListener('change', renderListings);
     });
+
+db
+  .channel('listings-channel')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: 'listings'
+    },
+    () => {
+      loadListings();
+    }
+  )
+  .subscribe();
 
     clearForm();
 
