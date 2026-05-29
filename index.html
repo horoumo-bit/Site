@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TON Market</title>
+  <title>Gatto Shop</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -525,6 +525,21 @@ async function saveListingToSupabase(listing) {
   }
 
   loadListings();
+  
+  db
+  .channel('listings-channel')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: 'listings'
+    },
+    () => {
+      loadListings();
+    }
+  )
+  .subscribe();
 
   closeSellModal();
 
@@ -590,95 +605,117 @@ async function saveListingToSupabase(listing) {
       renderListings();
     }
 
-    function createListing() {
+async function createListing() {
 
-      const title =
-        document.getElementById('itemTitle').value.trim();
+  const title =
+    document.getElementById('itemTitle').value.trim();
 
-      const username =
-        document.getElementById('telegramUsername').value.trim();
+  const username =
+    document.getElementById('telegramUsername').value.trim();
 
-      const generation =
-        document.getElementById('generationInput').value;
+  const generation =
+    document.getElementById('generationInput').value;
 
-      const rarity =
-        document.getElementById('rarityInput').value;
+  const rarity =
+    document.getElementById('rarityInput').value;
 
-      const biome =
-        document.getElementById('biomeInput').value;
+  const biome =
+    document.getElementById('biomeInput').value;
 
-      const description =
-        document.getElementById('descriptionInput').value.trim();
+  const description =
+    document.getElementById('descriptionInput').value.trim();
 
-      const price =
-        parseFloat(
-          document.getElementById('priceInput').value
-        );
+  const price =
+    parseFloat(
+      document.getElementById('priceInput').value
+    );
 
-      const imageFile =
-        document.getElementById('imageInput').files[0];
+  const imageFile =
+    document.getElementById('imageInput').files[0];
 
-      if (
-        !title ||
-        !username ||
-        !generation ||
-        !rarity ||
-        !biome ||
-        !description ||
-        isNaN(price)
-      ) {
+  if (
+    !title ||
+    !username ||
+    !generation ||
+    !rarity ||
+    !biome ||
+    !description ||
+    isNaN(price)
+  ) {
 
-        alert('Заполните все обязательные поля');
+    alert('Заполните все обязательные поля');
 
-        return;
-      }
+    return;
+  }
 
-      const listing = {
+  let imageUrl = '';
 
-        id: Date.now(),
+  if (imageFile) {
 
-        owner:
-          telegramUser.username || username,
+    imageUrl = await uploadImage(imageFile);
 
-        ownerName:
-          telegramUser.first_name || 'Пользователь',
+    if (!imageUrl) {
+      alert('Ошибка загрузки фото');
+      return;
+    }
+  }
 
-        title,
-        username,
-        generation,
-        rarity,
-        biome,
-        description,
+  const listing = {
 
-        price: Number(price.toFixed(2)),
+    id: crypto.randomUUID(),
 
-        image: '',
+    owner:
+      telegramUser.username || username,
 
-        createdAt: new Date().toISOString()
-      };
+    ownerName:
+      telegramUser.first_name || 'Пользователь',
 
-      if (imageFile) {
+    title,
+    username,
+    generation,
+    rarity,
+    biome,
+    description,
 
-        const reader = new FileReader();
+    price: Number(price.toFixed(2)),
 
-        reader.onload = function(e) {
+    image: imageUrl,
 
-          listing.image = e.target.result;
+    createdAt: new Date().toISOString()
+  };
 
-          saveListingToSupabase(listing);
-
-          closeSellModal();
-
-          clearForm();
-        };
-
-        reader.readAsDataURL(imageFile);
+  saveListingToSupabase(listing);
 
 } else {
 
   saveListingToSupabase(listing);
 }
     }
+
+async function uploadImage(file) {
+
+  const fileExt = file.name.split('.').pop();
+
+  const fileName =
+    crypto.randomUUID() + '.' + fileExt;
+
+  const filePath = `listings/${fileName}`;
+
+  const { error } = await db.storage
+    .from('listing-images')
+    .upload(filePath, file);
+
+  if (error) {
+    console.log(error);
+    return null;
+  }
+
+  const { data } = db.storage
+    .from('listing-images')
+    .getPublicUrl(filePath);
+
+  return data.publicUrl;
+}
 
     function clearForm() {
 
