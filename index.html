@@ -524,11 +524,7 @@ async function saveListingToSupabase(listing) {
     return;
   }
 
-  loadListings();
 
-  closeSellModal();
-
-  clearForm();
 }
 
     function openSellModal() {
@@ -663,13 +659,17 @@ async function saveListingToSupabase(listing) {
 
         reader.onload = function(e) {
 
-          listing.image = e.target.result;
+listing.image = e.target.result;
 
-          saveListingToSupabase(listing);
+listings.unshift(listing);
 
-          closeSellModal();
+renderListings();
 
-          clearForm();
+closeSellModal();
+
+clearForm();
+
+saveListingToSupabase(listing);
         };
 
         reader.readAsDataURL(imageFile);
@@ -1103,47 +1103,6 @@ async function removeListing(id) {
         .getElementById(id)
         .addEventListener('change', renderListings);
     });
-
-db
-  .channel('listings-channel')
-  .on(
-    'postgres_changes',
-    {
-      event: 'INSERT',
-      schema: 'public',
-      table: 'listings'
-    },
-    payload => {
-
-      const item = payload.new;
-
-      listings.unshift({
-        ...item,
-        ownerName: item.owner_name,
-        createdAt: item.created_at
-      });
-
-      renderListings();
-    }
-  )
-  .on(
-    'postgres_changes',
-    {
-      event: 'DELETE',
-      schema: 'public',
-      table: 'listings'
-    },
-    payload => {
-
-      listings =
-        listings.filter(
-          x => x.id !== payload.old.id
-        );
-
-      renderListings();
-    }
-  )
-  .subscribe();
 
     clearForm();
 
