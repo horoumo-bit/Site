@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gatto Shop</title>
+  <title>TON Market</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -524,17 +524,11 @@ async function saveListingToSupabase(listing) {
     return;
   }
 
-  /* МГНОВЕННО закрываем */
+  loadListings();
 
   closeSellModal();
 
   clearForm();
-
-  /* Локально обновляем */
-
-  listings.unshift(listing);
-
-  renderListings();
 }
 
     function openSellModal() {
@@ -596,115 +590,95 @@ async function saveListingToSupabase(listing) {
       renderListings();
     }
 
-async function createListing() {
+    function createListing() {
 
-  const title =
-    document.getElementById('itemTitle').value.trim();
+      const title =
+        document.getElementById('itemTitle').value.trim();
 
-  const username =
-    document.getElementById('telegramUsername').value.trim();
+      const username =
+        document.getElementById('telegramUsername').value.trim();
 
-  const generation =
-    document.getElementById('generationInput').value;
+      const generation =
+        document.getElementById('generationInput').value;
 
-  const rarity =
-    document.getElementById('rarityInput').value;
+      const rarity =
+        document.getElementById('rarityInput').value;
 
-  const biome =
-    document.getElementById('biomeInput').value;
+      const biome =
+        document.getElementById('biomeInput').value;
 
-  const description =
-    document.getElementById('descriptionInput').value.trim();
+      const description =
+        document.getElementById('descriptionInput').value.trim();
 
-  const price =
-    parseFloat(
-      document.getElementById('priceInput').value
-    );
+      const price =
+        parseFloat(
+          document.getElementById('priceInput').value
+        );
 
-  const imageFile =
-    document.getElementById('imageInput').files[0];
+      const imageFile =
+        document.getElementById('imageInput').files[0];
 
-  if (
-    !title ||
-    !username ||
-    !generation ||
-    !rarity ||
-    !biome ||
-    !description ||
-    isNaN(price)
-  ) {
+      if (
+        !title ||
+        !username ||
+        !generation ||
+        !rarity ||
+        !biome ||
+        !description ||
+        isNaN(price)
+      ) {
 
-    alert('Заполните все обязательные поля');
+        alert('Заполните все обязательные поля');
 
-    return;
-  }
+        return;
+      }
 
-  let imageUrl = '';
+      const listing = {
 
-  if (imageFile) {
+        id: Date.now(),
 
-    imageUrl = await uploadImage(imageFile);
+        owner:
+          telegramUser.username || username,
 
-    if (!imageUrl) {
+        ownerName:
+          telegramUser.first_name || 'Пользователь',
 
-      alert('Ошибка загрузки фото');
+        title,
+        username,
+        generation,
+        rarity,
+        biome,
+        description,
 
-      return;
-    }
-  }
+        price: Number(price.toFixed(2)),
 
-  const listing = {
+        image: '',
 
-    id: crypto.randomUUID(),
+        createdAt: new Date().toISOString()
+      };
 
-    owner:
-      telegramUser.username || username,
+      if (imageFile) {
 
-    ownerName:
-      telegramUser.first_name || 'Пользователь',
+        const reader = new FileReader();
 
-    title,
-    username,
-    generation,
-    rarity,
-    biome,
-    description,
+        reader.onload = function(e) {
 
-    price: Number(price.toFixed(2)),
+          listing.image = e.target.result;
 
-    image: imageUrl,
+          saveListingToSupabase(listing);
 
-    createdAt: new Date().toISOString()
-  };
+          closeSellModal();
+
+          clearForm();
+        };
+
+        reader.readAsDataURL(imageFile);
+
+} else {
 
   saveListingToSupabase(listing);
-
-  }
-
-async function uploadImage(file) {
-
-  const fileExt = file.name.split('.').pop();
-
-  const fileName =
-    crypto.randomUUID() + '.' + fileExt;
-
-  const filePath = `listings/${fileName}`;
-
-  const { error } = await db.storage
-    .from('listing-images')
-    .upload(filePath, file);
-
-  if (error) {
-    console.log(error);
-    return null;
-  }
-
-  const { data } = db.storage
-    .from('listing-images')
-    .getPublicUrl(filePath);
-
-  return data.publicUrl;
 }
+    }
 
     function clearForm() {
 
@@ -751,39 +725,6 @@ async function removeListing(id) {
 
   if (!confirm('Снять объявление с продажи?'))
     return;
-
-  const item =
-    listings.find(x => x.id === id);
-
-  if (!item) return;
-
-  /* Удаление картинки из storage */
-
-  if (item.image) {
-
-    try {
-
-      const imagePath =
-        item.image.split('/listing-images/')[1];
-
-      if (imagePath) {
-
-        const { error: storageError } =
-          await db.storage
-            .from('listing-images')
-            .remove([imagePath]);
-
-        if (storageError) {
-          console.log(storageError);
-        }
-      }
-
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  /* Удаление записи */
 
   const { error } = await db
     .from('listings')
@@ -919,7 +860,7 @@ async function removeListing(id) {
               item.owner === telegramUser.username
               ? `
                 <button
-                  onclick="removeListing('${item.id}')"
+                  onclick="removeListing(${item.id})"
                   class="bg-red-500 hover:bg-red-600 transition px-5 py-3 rounded-2xl font-bold"
                 >
                   Снять с продажи
@@ -1162,21 +1103,6 @@ async function removeListing(id) {
         .getElementById(id)
         .addEventListener('change', renderListings);
     });
-
-db
-  .channel('listings-channel')
-  .on(
-    'postgres_changes',
-    {
-      event: '*',
-      schema: 'public',
-      table: 'listings'
-    },
-    () => {
-      loadListings();
-    }
-  )
-  .subscribe();
 
     clearForm();
 
