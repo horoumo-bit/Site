@@ -524,24 +524,7 @@ async function saveListingToSupabase(listing) {
     return;
   }
 
-  
-db
-  .channel('listings-channel')
-  .on(
-    'postgres_changes',
-    {
-      event: '*',
-      schema: 'public',
-      table: 'listings'
-    },
-    () => {
-      loadListings();
-    }
-  )
-  .subscribe();
-
-
-    loadListings();
+  loadListings();
 
   closeSellModal();
 
@@ -743,34 +726,6 @@ async function removeListing(id) {
   if (!confirm('Снять объявление с продажи?'))
     return;
 
-  const item =
-    listings.find(x => x.id === id);
-
-  if (!item) return;
-
-  /* Удаляем картинку */
-
-  if (item.image) {
-
-    try {
-
-      const imagePath =
-        item.image.split('/listing-images/')[1];
-
-      if (imagePath) {
-
-        await db.storage
-          .from('listing-images')
-          .remove([imagePath]);
-      }
-
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  /* Удаляем объявление */
-
   const { error } = await db
     .from('listings')
     .delete()
@@ -780,14 +735,6 @@ async function removeListing(id) {
     console.log(error);
     return;
   }
-
-  listings =
-    listings.filter(x => x.id !== id);
-
-  renderListings();
-
-  closeDetails();
-}
 
   loadListings();
 
@@ -913,7 +860,7 @@ async function removeListing(id) {
               item.owner === telegramUser.username
               ? `
                 <button
-                  onclick="removeListing('${item.id}')"
+                  onclick="removeListing(${item.id})"
                   class="bg-red-500 hover:bg-red-600 transition px-5 py-3 rounded-2xl font-bold"
                 >
                   Снять с продажи
@@ -1156,8 +1103,6 @@ async function removeListing(id) {
         .getElementById(id)
         .addEventListener('change', renderListings);
     });
-
-    
 
     clearForm();
 
