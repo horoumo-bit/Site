@@ -389,13 +389,11 @@
 
   </div>
 
-// ========== ИНИЦИАЛИЗАЦИЯ SUPABASE ==========
-const SUPABASE_URL = 'https://jxqgbxchaepryjvrmkxw.supabase.co/rest/v1/listings';  // Замени!
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cWdieGNoYWVwcnlqdnJta3h3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4OTUzNDksImV4cCI6MjA5NTQ3MTM0OX0.tKfKzsWI8ZQ99Z5q0K1fTMgFEvstdjyDZiDRzqRcNhs';  // Замени!
+const SUPABASE_URL = 'https://jxqgbxchaepryjvrmkxw.supabase.co/rest/v1/listings';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imp4cWdieGNoYWVwcnlqdnJta3h3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk4OTUzNDksImV4cCI6MjA5NTQ3MTM0OX0.tKfKzsWI8ZQ99Z5q0K1fTMgFEvstdjyDZiDRzqRcNhs';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ========== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ==========
 const marketContainer = document.getElementById('marketContainer');
 const detailsModal = document.getElementById('detailsModal');
 const detailsContent = document.getElementById('detailsContent');
@@ -412,7 +410,6 @@ const viewNames = {
   3: 'Линия'
 };
 
-// ========== TELEGRAM DATA ==========
 const tg = window.Telegram?.WebApp;
 let telegramUser = {
   first_name: 'Пользователь',
@@ -428,7 +425,6 @@ if (tg) {
   }
 }
 
-// ========== UI ИНИЦИАЛИЗАЦИЯ ==========
 document.getElementById('profileName').innerText = telegramUser.first_name || 'Пользователь';
 document.getElementById('profileUsername').innerText = telegramUser.username ? '@' + telegramUser.username : '@telegram';
 
@@ -439,7 +435,6 @@ if (telegramUser.photo_url) {
   document.getElementById('profilePlaceholder').classList.add('hidden');
 }
 
-// ========== ЗАГРУЗКА ОБЪЯВЛЕНИЙ ИЗ SUPABASE ==========
 async function loadListings() {
   try {
     const { data, error } = await supabase
@@ -457,7 +452,6 @@ async function loadListings() {
   }
 }
 
-// ========== СОЗДАНИЕ ОБЪЯВЛЕНИЯ ==========
 async function createListing() {
   const title = document.getElementById('itemTitle').value.trim();
   const generation = document.getElementById('generationInput').value;
@@ -467,13 +461,12 @@ async function createListing() {
   const price = parseFloat(document.getElementById('priceInput').value);
   const imageFile = document.getElementById('imageInput').files[0];
 
-  // Проверка обязательных полей
+
   if (!title || !generation || !rarity || !biome || !description || isNaN(price)) {
     alert('Заполните все обязательные поля');
     return;
   }
 
-  // Формируем объект объявления
   const listing = {
     id: crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(),
     owner: telegramUser.username || 'telegram',
@@ -489,7 +482,6 @@ async function createListing() {
     createdat: new Date().toISOString()
   };
 
-  // Если есть фото - загружаем в Supabase Storage
   if (imageFile) {
     const fileName = `${listing.id}_${Date.now()}.jpg`;
     const { data: uploadData, error: uploadError } = await supabase.storage
@@ -504,7 +496,6 @@ async function createListing() {
     }
   }
 
-  // Сохраняем в базу
   const { error } = await supabase
     .from('listings')
     .insert([listing]);
@@ -514,7 +505,6 @@ async function createListing() {
     return;
   }
   
-  // Обновляем локальный список
   listings.unshift(listing);
   renderListings();
   closeSellModal();
@@ -522,18 +512,15 @@ async function createListing() {
   alert('Объявление создано!');
 }
 
-// ========== УДАЛЕНИЕ ОБЪЯВЛЕНИЯ ==========
 async function removeListing(id) {
   if (!confirm('Снять объявление с продажи?')) return;
   
-  // Сначала удаляем изображение из Storage (если есть)
   const item = listings.find(x => x.id === id);
   if (item && item.image) {
     const fileName = item.image.split('/').pop();
     await supabase.storage.from('listing-images').remove([fileName]);
   }
   
-  // Удаляем из базы
   const { error } = await supabase
     .from('listings')
     .delete()
@@ -549,7 +536,6 @@ async function removeListing(id) {
   closeDetails();
 }
 
-// ========== ОСТАЛЬНЫЕ ФУНКЦИИ (оставляем без изменений) ==========
 function openSellModal() {
   document.getElementById('sellModal').classList.remove('hidden');
   document.getElementById('sellModal').classList.add('flex');
@@ -749,7 +735,6 @@ function renderListings() {
   }
 }
 
-// ========== НАСТРОЙКА ВСЕХ ФИЛЬТРОВ ==========
 ['searchInput', 'generationFilter', 'rarityFilter', 'biomeFilter', 'minPriceFilter', 'maxPriceFilter'].forEach(id => {
   const el = document.getElementById(id);
   if (el) {
@@ -758,7 +743,6 @@ function renderListings() {
   }
 });
 
-// ========== ЗАПОЛНЯЕМ ГЕНЕРАЦИИ ==========
 const generationSelects = [document.getElementById('generationInput'), document.getElementById('generationFilter')];
 for (let i = 1; i <= 10; i++) {
   generationSelects.forEach(select => {
@@ -771,7 +755,6 @@ for (let i = 1; i <= 10; i++) {
   });
 }
 
-// ========== ИНИЦИАЛИЗАЦИЯ ==========
 clearForm();
 loadListings();
 
