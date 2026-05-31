@@ -631,7 +631,7 @@ async function saveListingToSupabase(listing) {
 
       const listing = {
 
-        id: Date.now(),
+        id: String(Date.now()),
 
         owner:
           telegramUser.username || username,
@@ -729,7 +729,7 @@ async function removeListing(id) {
   const { error } = await db
     .from('listings')
     .delete()
-    .eq('id', id);
+    .eq('id', String(id));
 
   if (error) {
     console.log(error);
@@ -744,7 +744,7 @@ async function removeListing(id) {
     function openDetails(id) {
 
       const item =
-        listings.find(x => x.id === id);
+        listings.find(x => String(x.id) === String(id));
 
       if (!item) return;
 
